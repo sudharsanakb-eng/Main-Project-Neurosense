@@ -1,0 +1,47 @@
+{% load static %}
+{% include "layout/partials/counsellor/header.html" %} 
+ 
+ <section id="news" data-stellar-background-ratio="2.5">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-12 col-sm-12">
+                         <!-- SECTION TITLE -->
+                         <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
+                              <h2>Customer Details</h2>
+                         </div>
+                    </div>
+`                   {% for i in vdi %}
+                    <div class="col-md-4 col-sm-6">
+                         <!-- NEWS THUMB -->
+                         <div class="news-thumb wow fadeInUp" data-wow-delay="0.4s">
+                              <a href="news-detail.html">
+                                   <img src="images/news-image1.jpg" class="img-responsive" alt="">
+                              </a>
+                              <div class="news-info">
+                                   <!-- <span>March 08, 2018</span> -->
+                                   <h3><a href="news-detail.html">{{i.customer.name}}</a></h3>
+                                   <p>Maecenas risus neque, placerat volutpat tempor ut, vehicula et felis.</p>
+                                   <div class="author">
+                                        <img src="images/author-image.jpg" class="img-responsive" alt="">
+                                        <div class="author-info">
+                                             <h5>Jeremie Carlson</h5>
+                                             <p>CEO / Founder</p>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+                    {% endfor %}
+  <div class="col-md-4 col-sm-6">
+                  
+                        
+                    </div>
+
+               </div>
+          </div>
+     </section>
+
+
+
+{% include "layout/partials/counsellor/footer.html" %}

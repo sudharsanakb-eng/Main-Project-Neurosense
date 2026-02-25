@@ -1,0 +1,90 @@
+{% include 'layout/partials/admin/header.html' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  .button-class{
+    font-size: 30px;
+  }
+</style>
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">DataTables.Net</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+          <a href="#">
+            <i class="icon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          <a href="#">Tables</a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          <a href="#">Datatables</a>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Basic</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="basic-datatables" class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Payment Date</th>
+
+                    <th scope="col">Amount</th>
+                    <th scope="col">Appointment Id</th>
+                    
+                    
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for i in vdi %}
+                  <tr>
+
+                    <td>{{forloop.counter}}</td>
+                    
+
+                    <td>{{i.id}}</td>
+                    <td>{{i.paymentdate}}</td>
+                    <td>{{i.amount}}</td>
+                    <!-- <td>{{i.user.username}}</td>
+                            <td>{{i.user.password}}</td> -->
+                    <td>{{i.appointmentid}}</td>
+                    
+                    
+
+                   <td>
+
+
+                  </tr>
+               
+                  {% endfor %}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+{% include 'layout/partials/admin/footer.html' %}

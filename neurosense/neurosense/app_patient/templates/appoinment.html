@@ -1,0 +1,128 @@
+{% load static %}
+{% include "layout/partials/counsellor/header.html" %}
+
+<main id="main" style="margin-top: 130px; padding-bottom: 60px; background-color: #fcfdfe;">
+    <div class="container">
+        <div class="row gy-4">
+
+            <!-- LEFT : BOOKING FORM -->
+            <div class="col-lg-7">
+                <div style="background: #fff; padding: 35px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);">
+                    <h3 style="color: #a5c422; font-weight: 700; margin-bottom: 25px;">
+                        Book Your Appointment
+                    </h3>
+
+                    <form method="POST" id="bookingForm" action="{% url 'user:app' id %}">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label" style="font-weight: 600;">
+                                Choose Date
+                            </label>
+                            <input type="date"
+                                   name="date"
+                                   id="dateInput"
+                                   class="form-control"
+                                   required
+                                   onchange="displaydate()"
+                                   style="padding: 15px; border-radius: 10px; border: 2px solid #e8f2fd;">
+                        </div>
+
+                        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px;">
+                        <button  class="appointment-btn-details">Confirm Booking</button> 
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- RIGHT : BOOKING SUMMARY -->
+            <div class="col-lg-5">
+                <div style="background: #fff; padding: 35px; border-radius: 15px;
+                            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                            border-top: 5px solid #a5c422;
+                            position: sticky; top: 140px;">
+
+                    <h4 style="font-weight: 700; color: #a5c422; margin-bottom: 20px;">
+                        Booking Summary
+                    </h4>
+
+                    <!-- PATIENT INFO -->
+                    <div class="mb-4 p-3"
+                         style="background: #fcfdfe; border-radius: 10px; border: 1px dashed #a5c422;">
+                        <h6 style="font-weight: 700; color: #a5c422; margin-bottom: 10px;
+                                   font-size: 0.8rem; text-transform: uppercase;">
+                            Patient Information
+                        </h6>
+
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Name:</span>
+                            <span style="font-weight: 600;">
+                                {{ customer.user.username }}
+                            </span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Age:</span>
+                            <span style="font-weight: 600;">
+                                {{ customer.age|default:"--" }} Yrs
+                            </span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- COUNSELLOR INFO -->
+                    <div class="d-flex align-items-center mb-4">
+                        {% if councellor.photo %}
+                            <img src="{{ councellor.photo.url }}"
+                                 alt="Counsellor"
+                                 style="width: 50px; height: 50px; border-radius: 50%;
+                                        object-fit: cover; margin-right: 15px;">
+                        {% endif %}
+
+                        <div>
+                            <h6 class="mb-0" style="font-weight: 700;">
+                                {{ councellor.user.name }}
+                            </h6>
+                            <small class="text-muted">
+                                {{ councellor.special }}
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- SUMMARY -->
+                    <div class="summary-details">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Consultation Fee</span>
+                            <span style="font-weight: 600;">
+                                ₹ {{ councellor.fee }}
+                            </span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Selected Date</span>
+                            <span id="displayDate"
+                                  style="font-weight: 700; color: #a5c422;">
+                                Not Selected
+                            </span>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <span style="font-weight: 700; font-size: 1.1rem;">
+                                Total Amount
+                            </span>
+                            <span style="font-weight: 800; color: #a5c422; font-size: 1.2rem;">
+                                ₹ {{ councellor.fee }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT -->
+<script>
+    function displaydate(){
+        date=document.getElementById("dateInput").value
+        document.getElementById("displayDate").innerHTML=date
+
+    }
+</script>

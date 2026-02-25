@@ -1,0 +1,82 @@
+  <!-- MAKE AN APPOINTMENT -->
+{% load static %}
+{% include "layout/partials/guest/header.html" %}
+     <section id="appointment" data-stellar-background-ratio="3">
+          <div class="container">
+               <div class="row">
+
+                    <div class="col-md-6 col-sm-6">
+                         <img src="{% static 'guest/images/appointment-image.jpg' %}" class="img-responsive" alt="">
+                    </div>
+                      
+                    <div class="col-md-6 col-sm-6">
+                         <!-- CONTACT FORM HERE -->
+                         <form id="appointment-form" role="form" method="POST" action="{% url 'dashboard:cust' %}">
+                       {% csrf_token %}
+                             
+
+                              <!-- SECTION TITLE -->
+                              <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
+                                   <h2>CUSTOMER LOG IN </h2>
+                              </div>
+                              <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">Name</label>
+                                        <input type="tel" class="form-control" id="Name" name="name" placeholder="Name" required pattern="^[A-Z][a-zA-Z\s]*$ "title="Name must start with a capital letter and contain only letters.">
+                                       
+                                   </div>
+                                <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">Address</Address></label>
+                                        <input type="tel" class="form-control" id="Name" name="address" placeholder="address" required>
+                                       
+                                   </div>
+                                <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">Date Of Birth</label>
+                                        <input type="date" class="form-control" id="Name" name="dob" placeholder="dob">
+                                       
+                                   </div>
+
+                                <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">Age</label>
+                                        <input type="tel" class="form-control" id="Name" name="age" placeholder="age">
+                                       
+                                   </div>
+                                <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">User Name</label>
+                                        <input type="tel" class="form-control" id="Name" name="username" placeholder="Name" required minlength="8" title="Username must be at least 8 characters long.">
+                                       
+                                   </div>
+
+                                <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">password</label>
+                                        <input type="password" class="form-control" id="Name" name="password" placeholder="password" required minlength="8" title="Password must be at least 8 characters long.">
+                                       
+                                   </div>
+                                  <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">E-mail</label>
+                                        <input type="tel" class="form-control" id="email" name="email" placeholder="email" required>
+                                       
+                                   </div>
+                                   <div class="col-md-12 col-sm-12">
+                                        <label for="select">Gender</label>
+                                        <select class="form-control" name="gender">
+                                             <option>Select</option>
+                                             <option>Male</option>
+                                             <option>Female</option>
+                                             <option>Other</option>
+                                        </select>     
+                                       
+                                   </div>
+                                   
+                                   <div class="col-md-12 col-sm-12">
+                                        <label for="telephone">Contact</label>
+                                        <input type="tel" class="form-control" id="password" name="contact" placeholder="contact" required pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number">
+                                        <button type="submit" class="form-control" id="cf-submit" name="submit">Register</button>
+                                   </div>
+                              </div>
+                        </form>
+                    </div>
+
+               </div>
+          </div>
+     </section>
+{% include "layout/partials/guest/footer.html" %}

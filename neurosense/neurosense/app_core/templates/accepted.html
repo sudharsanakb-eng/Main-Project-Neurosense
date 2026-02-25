@@ -1,0 +1,100 @@
+{% include 'layout/partials/admin/header.html' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  .button-class{
+    font-size: 30px;
+  }
+</style>
+<div class="container">
+  <div class="page-inner">
+    <div class="page-header">
+      <h3 class="fw-bold mb-3">DataTables.Net</h3>
+      <ul class="breadcrumbs mb-3">
+        <li class="nav-home">
+          <a href="#">
+            <i class="icon-home"></i>
+          </a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          <a href="#">Tables</a>
+        </li>
+        <li class="separator">
+          <i class="icon-arrow-right"></i>
+        </li>
+        <li class="nav-item">
+          <a href="#">Datatables</a>
+        </li>
+      </ul>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Basic</h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="basic-datatables" class="display table table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Image</th>
+
+                    <th scope="col">Specialization</th>
+                    <th scope="col">Experience</th>
+                    <th scope="col">Doctor Number</th>
+                    <!-- <th scope="col">User Name</th>
+                            <th scope="col">Password</th> -->
+                    <th scope="col">Contact Details</th>
+                    <th scope="col">About</th>
+                    <th scope="col">Daily Count</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {% for i in vdi %}
+                  <tr>
+
+                    <td>{{forloop.counter}}</td>
+                    <td>{{i.user.name}}</td>
+                    <td><img src="/media/{{i.photo}}" style="width: 50px;height: 50px"></td>
+
+                    <td>{{i.special}}</td>
+                    <td>{{i.exp}}</td>
+                    <td>{{i.number}}</td>
+                    <!-- <td>{{i.user.username}}</td>
+                            <td>{{i.user.password}}</td> -->
+
+                    <td>{{i.contact}}<br>{{i.user.email}}</td>
+                    <td>{{i.desc}}</td>
+                    <td>{{i.count}}</td>
+                    <td>{{i.status}}</td>
+                    
+
+                   <td>
+  
+
+
+
+                  {% endfor %}
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+{% include 'layout/partials/admin/footer.html' %}
