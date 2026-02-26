@@ -1,47 +1,72 @@
 {% load static %}
 {% include "layout/partials/counsellor/header.html" %} 
- 
- <section id="news" data-stellar-background-ratio="2.5">
-          <div class="container">
-               <div class="row">
 
-                    <div class="col-md-12 col-sm-12">
-                         <!-- SECTION TITLE -->
-                         <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
-                              <h2>Customer Details</h2>
-                         </div>
-                    </div>
-`                   {% for i in vdi %}
-                    <div class="col-md-4 col-sm-6">
-                         <!-- NEWS THUMB -->
-                         <div class="news-thumb wow fadeInUp" data-wow-delay="0.4s">
-                              <a href="news-detail.html">
-                                   <img src="images/news-image1.jpg" class="img-responsive" alt="">
-                              </a>
-                              <div class="news-info">
-                                   <!-- <span>March 08, 2018</span> -->
-                                   <h3><a href="news-detail.html">{{i.customer.name}}</a></h3>
-                                   <p>Maecenas risus neque, placerat volutpat tempor ut, vehicula et felis.</p>
-                                   <div class="author">
-                                        <img src="images/author-image.jpg" class="img-responsive" alt="">
-                                        <div class="author-info">
-                                             <h5>Jeremie Carlson</h5>
-                                             <p>CEO / Founder</p>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-                    {% endfor %}
-  <div class="col-md-4 col-sm-6">
-                  
-                        
-                    </div>
+<section id="customer-details" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h2>Customer Details</h2>
+                </div>
 
-               </div>
-          </div>
-     </section>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>DOB</th>
+                                <th>Gender</th>
+                                <th>Age</th>
+                                <th>Contact</th>
+                                <th>Report</th>
+                            </tr>
+                        </thead>
 
+                        <tbody>
+                            {% for i in vdi %}
+                            <tr>
+                               <td>{{ forloop.counter }}</td>
 
+<!-- Username from User model -->
+<td>{{ i.customer.username }}</td>
+
+{% with cust=i.customer.customer_set.first %}
+    {% if cust %}
+        <td>{{ cust.address }}</td>
+        <td>{{ cust.dob }}</td>
+        <td>{{ cust.gender }}</td>
+        <td>{{ cust.age }}</td>
+        <td>{{ cust.contact }}</td>
+    {% else %}
+        <td colspan="5">Profile Not Found</td>
+    {% endif %}
+{% endwith %}
+
+<td>
+    <a href="{% url 'councellor:view_report' i.id %}"
+       class="btn btn-sm btn-primary">
+       View Report
+    </a>
+</td>
+                            </tr>
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="8" class="text-center">
+                                    No customers found
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 {% include "layout/partials/counsellor/footer.html" %}

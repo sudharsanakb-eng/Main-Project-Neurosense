@@ -1,122 +1,115 @@
+{% load static %}
+{% include "layout/partials/user/header.html" %}
 
- {% load static %}
-  {% include "layout/partials/user/header.html" %}
-     
-     <!-- <section class="navbar navbar-default navbar-static-top" role="navigation">
-          <div class="container">
+<style>
+.doctor-section {
+    padding: 70px 0;
+    background-color: #f5f7fa;
+}
 
-               <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button> -->
+.doctor-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
 
-                    <!-- lOGO TEXT HERE -->
-                    <!-- <a href="index.html" class="navbar-brand"><i class="fa fa-h-square"></i>ealth Center</a>
-               </div> -->
+.doctor-img {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 12px;
+    background: #ffffff;
+    padding: 8px;
+}
 
-               <!-- MENU LINKS -->
-               <!-- <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                         <li><a href="index.html#top" class="smoothScroll">Home</a></li>
-                         <li><a href="index.html#about" class="smoothScroll">About Us</a></li>
-                         <li><a href="index.html#team" class="smoothScroll">Our Staff</a></li>
-                         <li><a href="index.html#news" class="smoothScroll">News</a></li>
-                         <li><a href="index.html#google-map" class="smoothScroll">Contact</a></li>
-                         <li class="appointment-btn"><a href="index.html#appointment">Make an appointment</a></li>
-                    </ul>
-               </div>
+.doctor-name {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
 
-          </div>
-     </section> -->
+.doctor-special {
+    color: #a5c422;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
 
+.info-list p {
+    margin-bottom: 8px;
+    font-size: 15px;
+    color: #444;
+}
 
-     <!-- NEWS DETAIL -->
-     <section id="news-detail" data-stellar-background-ratio="0.5">
-          <div class="container">
-               <div class="row">
-                
-                    <div class="col-md-8 col-sm-7">
-                         <!-- NEWS THUMB -->
-                         <div class="news-detail-thumb">
-                              <div class="news-image">
-                                   <img src="/media/{{vdi.photo}}" class="img-responsive" alt="">
-                              </div>
-                              <!-- <h3>Review Annual Medical Research</h3>
-                              <p>Aenean molestie porttitor lorem sed semper. Aliquam semper iaculis libero, eu finibus ex euismod at. In molestie justo ut egestas porttitor. Phasellus interdum erat eu lectus condimentum euismod. Sed pellentesque fringilla diam vitae congue. Ut rutrum diam nisi, in maximus felis vulputate vitae.</p>
-                              <blockquote>Vestibulum gravida rutrum est non volutpat. Morbi imperdiet odio ut tempor vestibulum. Mauris tincidunt vehicula nibh, sodales vehicula erat imperdiet ut.</blockquote>
-                              <p>Maecenas eu lorem gravida nisi aliquam porta. Etiam eu tellus enim. Vivamus ligula ex, iaculis a sodales et, placerat eget neque. In porttitor tortor in purus commodo lobortis. Nullam ornare quam ac turpis luctus, commodo facilisis nisi venenatis. Cras a posuere risus.</p>
-                              
-                              <ul> -->
-                                   <!-- <li>Phasellus posuere nisi eleifend, vestibulum ipsum eleifend</li> -->
-                                   <!-- <li>Nulla sapien neque, posuere vitae porta eu</li>
-                                   <li>Fusce quis enim vel libero pulvinar gravida sed eu justo</li>
-                              </ul> -->
+.doctor-desc {
+    margin-top: 20px;
+    color: #555;
+    line-height: 1.7;
+}
 
-                              <!-- <p>Nunc eget ex sed nisl rhoncus lacinia. Vestibulum porta lectus at est placerat, nec commodo purus dignissim. Suspendisse ac quam in metus laoreet auctor ac quis enim.</p>
-                              <div class="news-social-share">
-                                   <h4>Share this article</h4>
-                                        <a href="#" class="btn btn-primary"><i class="fa fa-facebook"></i>Facebook</a>
-                                        <a href="#" class="btn btn-success"><i class="fa fa-twitter"></i>Twitter</a>
-                                        <a href="#" class="btn btn-danger"><i class="fa fa-google-plus"></i>Google+</a>
-                              </div> -->
-                         </div>
+.appointment-btn {
+    margin-top: 25px;
+    background-color: #a5c422;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.appointment-btn:hover {
+    background-color: #8cab1b;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+</style>
+
+<section class="doctor-section">
+    <div class="container">
+        <div class="doctor-card">
+            <div class="row align-items-center">
+
+                <!-- Left Image -->
+                <div class="col-md-5 text-center mb-4 mb-md-0">
+                    <img src="/media/{{vdi.photo}}" 
+                         class="doctor-img"
+                         alt="Counsellor">
+                </div>
+
+                <!-- Right Details -->
+                <div class="col-md-7">
+                    <h2 class="doctor-name">
+                        {{vdi.user.name}}
+                    </h2>
+
+                    <div class="doctor-special">
+                        {{vdi.special}}
                     </div>
-                   
-                    <div class="col-md-4 col-sm-5">
-                         <div class="news-sidebar">
-                              <div class="news-author">
-                                   <h3>About the counsellor</h3>
-                                   <h5>Name:-{{vdi.user.name}}</h5>
-                                   <h5>Specialization:-{{vdi.special}}</h5>
-                                   <h5>Experienece:-{{vdi.exp}}</h5>
-                                   <h5>Doctor Number:-{{vdi.number}}</h5>
-                                   <h5>Contact Number:-{{vdi.contact}}</h5>
-                                   <h5>Gender:-{{vdi.gender}}<h5>
-                                   <h5>Description:-{{vdi.desc}}</h5>
-                                   <h5>Daily Count:-{{vdi.count}}</h5>
-                                   <h5>Fee:-{{vdi.fee}}</h5>
-                                   <div class="collapse navbar-collapse" style="    margin-top: 20px;">
-                                   <a href="{% url 'user:app' vdi.id %}"><button  class="appointment-btn-details">Make An Appointment</button> </a>
-                           
-               </div>
-                              
-                              </div>
-                              
-                                        </div>
 
-                                       
-                                        </div>
-                              </div>
-
-                              <!-- <div class="news-categories">
-                                   <h4>Categories</h4>
-                                        <li><a href="#"><i class="fa fa-angle-right"></i> Dental</a></li>
-                                        <li><a href="#"><i class="fa fa-angle-right"></i> Cardiology</a></li>
-                                        <li><a href="#"><i class="fa fa-angle-right"></i> Health</a></li>
-                                        <li><a href="#"><i class="fa fa-angle-right"></i> Consultant</a></li>
-                              </div> -->
-
-                              <!-- <div class="news-ads sidebar-ads">
-                                   <h4>Sidebar Banner Ad</h4>
-                              </div>
-
-                              <div class="news-tags">
-                                   <h4>Tags</h4>
-                                        <li><a href="#">Pregnancy</a></li>
-                                        <li><a href="#">Health</a></li>
-                                        <li><a href="#">Consultant</a></li>
-                                        <li><a href="#">Medical</a></li>
-                                        <li><a href="#">Doctors</a></li>
-                                        <li><a href="#">Social</a></li>
-                              </div> -->
-                         </div>
+                    <div class="info-list">
+                        <p><strong>Experience:</strong> {{vdi.exp}} Years</p>
+                        <p><strong>Doctor ID:</strong> {{vdi.number}}</p>
+                        <p><strong>Contact:</strong> {{vdi.contact}}</p>
+                        <p><strong>Gender:</strong> {{vdi.gender}}</p>
+                        <p><strong>Daily Slots:</strong> {{vdi.count}}</p>
+                        <p><strong>Consultation Fee:</strong> ₹{{vdi.fee}}</p>
                     </div>
-                    
-               </div>
-          </div>
-     </section>
+
+                    <p class="doctor-desc">
+                        {{vdi.desc}}
+                    </p>
+
+                    <a href="{% url 'user:app' vdi.id %}" 
+                       class="btn appointment-btn">
+                       Make An Appointment
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 {% include "layout/partials/user/footer.html" %}
-         

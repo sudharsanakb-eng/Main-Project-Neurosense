@@ -1,5 +1,5 @@
 {% load static %}
-{% include "layout/partials/counsellor/header.html" %}
+{% include "layout/partials/user/header.html" %}
 
 <main id="main" style="margin-top: 130px; padding-bottom: 60px; background-color: #fcfdfe;">
     <div class="container">
@@ -23,6 +23,7 @@
                                    id="dateInput"
                                    class="form-control"
                                    required
+
                                    onchange="displaydate()"
                                    style="padding: 15px; border-radius: 10px; border: 2px solid #e8f2fd;">
                         </div>

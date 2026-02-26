@@ -1,0 +1,121 @@
+{% load static %}
+{% include "layout/partials/counsellor/header.html" %}
+
+<style>
+.result-section {
+    padding: 60px 0;
+    background: #f4f7fb;
+}
+
+.result-card {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+.label-title {
+    font-weight: 600;
+    color: #444;
+}
+
+.value-text {
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.schedule-btn {
+    background-color: #a5c422;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.schedule-btn:hover {
+    background-color: #8cab1b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+</style>
+
+
+<section class="result-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+
+                <!-- CUSTOMER DETAILS -->
+                <div class="result-card">
+                    <h3 class="section-title">Customer Information</h3>
+
+                    <p><span class="label-title">Name:</span> {{ app.Customer.username }}</p>
+                    <p><span class="label-title">Appointment Date:</span> {{ app.appointmentdate }}</p>
+                    <p><span class="label-title">Appointment Time:</span> {{ app.appointmenttime }}</p>
+                </div>
+
+
+                <!-- ML REPORT RESULT -->
+                 <!-- loop -->
+                <div class="result-card">
+                    <h3 class="section-title">Depression Analysis Report</h3>
+
+                    <p><span class="label-title">Predicted Level:</span> 
+                        <strong style="color:#e74c3c;">{{ report.level }}</strong>
+                    </p>
+
+                    <p><span class="label-title">Score:</span> {{ report.score }}</p>
+
+                    <p><span class="label-title">Summary:</span></p>
+                    <p class="value-text">
+                        {{ report.summary }}
+                    </p>
+                </div>
+
+
+                <!-- SCHEDULE MEETING -->
+                <div class="result-card text-center">
+                    <h3 class="section-title">Schedule Counselling Session</h3>
+
+                    <form action="{% url 'councellor:view_report' app.id %}" method="post">
+                        {% csrf_token %}
+
+                       <div class="form-group">
+    <label>Select Meeting Date</label>
+    <input type="date" 
+           name="meeting_date" 
+           value="{{ app.appointmentdate|date:'Y-m-d' }}" 
+           class="form-control" 
+           required>
+</div>
+
+<div class="form-group">
+    <label>Select Meeting Time</label>
+    <input type="time" 
+           name="meeting_time" 
+           value="{{ app.appointmenttime|time:'H:i' }}" 
+           class="form-control" 
+           required>
+</div>
+
+                        <button type="submit" class="schedule-btn">
+                            Schedule Meeting
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "layout/partials/counsellor/footer.html" %}

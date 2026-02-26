@@ -1,140 +1,130 @@
 {% load static %}
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% include "layout/partials/user/header.html" %}
 
-<head>
+<style>
+.counsellor-section {
+    padding: 70px 0;
+    background-color: #f5f7fa;
+}
 
-     <title>Health/Mental - Medical Website Template</title>
-     <!--
+.section-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
 
-Template 2098 Health
+.section-title h2 {
+    font-weight: 700;
+    color: #2c3e50;
+}
 
-http://www.tooplate.com/view/2098-health
+.counsellor-card {
+    background: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+    height: 100%;
+}
 
--->
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="description" content="">
-     <meta name="keywords" content="">
-     <meta name="author" content="Tooplate">
-     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+.counsellor-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
 
-     <link rel="stylesheet" href="{% static 'guest/css/bootstrap.min.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/font-awesome.min.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/animate.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/owl.carousel.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/owl.theme.default.min.css' %}">
+.counsellor-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+}
 
-     <!-- MAIN CSS -->
-     <link rel="stylesheet" href="{% static 'guest/css/tooplate-style.css' %}">
+.counsellor-body {
+    padding: 20px;
+    text-align: center;
+}
 
-</head>
+.counsellor-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
 
-<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+.counsellor-special {
+    color: #a5c422;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
 
-     <!-- PRE LOADER -->
-     <section class="preloader">
-          <div class="spinner">
+.counsellor-exp {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+}
 
-               <span class="spinner-rotate"></span>
+.view-btn {
+    background-color: #a5c422;
+    color: #ffffff;
+    padding: 8px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s ease;
+    display: inline-block;
+}
 
-          </div>
-     </section>
+.view-btn:hover {
+    background-color: #8cab1b;
+    color: #ffffff;
+    text-decoration: none;
+}
+</style>
 
+<section class="counsellor-section">
+    <div class="container">
 
-     <!-- HEADER -->
-     <header>
-          <div class="container">
-               <div class="row">
-
-                    <div class="col-md-4 col-sm-5">
-                         <p>Welcome to a Professional Health Care</p>
-                    </div>
-
-                    <div class="col-md-8 col-sm-7 text-align-right">
-                         <span class="phone-icon"><i class="fa fa-phone"></i> 010-060-0160</span>
-                         <span class="date-icon"><i class="fa fa-calendar-plus-o"></i> 6:00 AM - 10:00 PM
-                              (Mon-Fri)</span>
-                         <span class="email-icon"><i class="fa fa-envelope-o"></i> <a
-                                   href="#">info@company.com</a></span>
-                    </div>
-
-               </div>
-          </div>
-     </header>
-     <section class="navbar navbar-default navbar-static-top" role="navigation">
-          <div class="container">
-
-               <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button>
-
-                    <!-- lOGO TEXT HERE -->
-                    <a href="index.html" class="navbar-brand">NeuroSense</a>
-               </div>
-
-               <!-- MENU LINKS -->
-               <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                         <li><a href="#top" class="smoothScroll">Home</a></li>
-                         <li><a href="{% url 'dashboard:qview' %}" class="smoothScroll">Questions</a></li>
-                         <li><a href="#team" class="smoothScroll">Reports</a></li>
-                         <li><a href="{% url 'patient:vcon' %}" class="smoothScroll">Councellors</a></li>
-                         <li class="appointment-btn"><a href="{% url 'dashboard:login' %}">Log Out</a></li>
-                    </ul>
-               </div>
-
-          </div>
-     </section>
-
-
-
-     <!-- NEWS -->
-     <section id="news">
-          <div class="container">
-               <div class="row">
-
-                    <div class="col-md-12">
-                         <!-- SECTION TITLE -->
-                         <div class="section-title wow fadeInUp" data-wow-delay="0.1s">
-                              <h2>Our counsellors</h2>
-                         </div>
-                    </div>
-               </div>
-          </div>
-         
-          <div class="container">
-    {% for i in vdi %}
-    
-        {% if forloop.counter0|divisibleby:3 %}
-            <div class="row">
-        {% endif %}
-
-        <div class="col-md-4 col-sm-6" style="margin-bottom: 20px;">
-            <div class="news-thumb wow fadeInUp" data-wow-delay="0.8s">
-                <a href="{% url 'user:vdetail' i.id %}">
-                    <img src="/media/{{i.photo}}" class="img-responsive" alt="">
-                </a>
-                <div class="news-info">
-                    <div class="author-info">
-                        <h5>Name:-{{i.user.name}}</h5>
-                        <h5>Specialization:-{{i.special}}</h5>
-                        <p>Experience:-{{i.exp}}</p>
-                    </div>
-                </div>
-            </div>
+        <!-- Title -->
+        <div class="section-title">
+            <h2>Our Counsellors</h2>
         </div>
 
-        {% if forloop.counter|divisibleby:3 or forloop.last %}
+        <div class="row">
+            {% for i in vdi %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="counsellor-card">
+
+                    <!-- Image -->
+                    <a href="{% url 'user:vdetail' i.id %}">
+                        <img src="/media/{{i.photo}}" 
+                             class="counsellor-img"
+                             alt="Counsellor">
+                    </a>
+
+                    <!-- Content -->
+                    <div class="counsellor-body">
+                        <div class="counsellor-name">
+                            {{i.user.name}}
+                        </div>
+
+                        <div class="counsellor-special">
+                            {{i.special}}
+                        </div>
+
+                        <div class="counsellor-exp">
+                            {{i.exp}} Years Experience
+                        </div>
+
+                        <a href="{% url 'user:vdetail' i.id %}" 
+                           class="view-btn">
+                           View Profile
+                        </a>
+                    </div>
+
+                </div>
             </div>
-        {% endif %}
+            {% endfor %}
+        </div>
 
-    {% endfor %}
-</div>
+    </div>
+</section>
 
-     </section>
-     {% include "layout/partials/counsellor/footer.html" %}
+{% include "layout/partials/user/footer.html" %}

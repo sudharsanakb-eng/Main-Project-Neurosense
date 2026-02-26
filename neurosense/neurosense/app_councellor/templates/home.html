@@ -1,0 +1,73 @@
+{% load static %}
+{% include "layout/partials/counsellor/header.html" %}
+
+<!-- HERO SECTION -->
+<section style="background: linear-gradient(135deg,#2b5876,#4e4376); padding:80px 0; color:white;">
+    <div class="container text-center">
+        <h1 style="font-weight:700;">Welcome, {{ request.user.name }}</h1>
+        <p style="font-size:18px; margin-top:15px;">
+            Empowering you to Assess. Understand. Heal.
+        </p>
+    </div>
+</section>
+
+
+<!-- DASHBOARD CARDS -->
+<section class="py-5" style="background:#f8f9fa;">
+    <div class="container">
+        <div class="row text-center">
+
+            <!-- View Customers -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-4">
+                    <img src="{% static 'guest/images/team-image1.jpg' %}" class="img-fluid mb-3" style="height:120px; object-fit:cover;">
+                    <h4>View Customers</h4>
+                    <p>Access customer profiles and mental health records.</p>
+                    <a href="{% url 'councellor:vcusto' %}" class="btn btn-primary">
+                        Go to Customers
+                    </a>
+                </div>
+            </div>
+
+            <!-- View Reports -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-4">
+                    <img src="{% static 'guest/images/news-image1.jpg' %}" class="img-fluid mb-3" style="height:120px; object-fit:cover;">
+                    <h4>Analyze Reports</h4>
+                    <p>Review ML-generated depression analysis reports.</p>
+                    <a href="" class="btn btn-success">
+                        View Reports
+                    </a>
+                </div>
+            </div>
+
+            <!-- Appointments -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg p-4">
+                    <img src="{% static 'guest/images/news-image2.jpg' %}" class="img-fluid mb-3" style="height:120px; object-fit:cover;">
+                    <h4>Appointments</h4>
+                    <p>Manage scheduled therapy sessions.</p>
+                    <a href="" class="btn btn-warning text-white">
+                        Manage Appointments
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- MOTIVATIONAL SECTION -->
+<section style="background:white; padding:60px 0;">
+    <div class="container text-center">
+        <h2 style="font-weight:600;">Your Role Matters</h2>
+        <p style="max-width:700px; margin:20px auto; font-size:16px; color:#555;">
+            With NeuroSense’s intelligent depression prediction system, you can
+            detect early signs of emotional distress and guide individuals toward
+            recovery through compassionate counseling and data-driven insights.
+        </p>
+    </div>
+</section>
+
+{% include "layout/partials/counsellor/footer.html" %}

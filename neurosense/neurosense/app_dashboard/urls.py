@@ -17,4 +17,5 @@ urlpatterns = [
     path("userdash2/",views.userdash2,name='userdash2'),
     path("qview/",views.qview,name='qview'),
     path('con/',views.con,name='con'),
+    path("logout/",views.logout_view,name='logout'),
 ]

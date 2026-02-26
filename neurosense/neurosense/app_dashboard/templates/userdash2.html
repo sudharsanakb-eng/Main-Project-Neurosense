@@ -1,90 +1,5 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-     <title>Health/Mental - Medical Website Template</title>
-<!--
-
-Template 2098 Health
-
-http://www.tooplate.com/view/2098-health
-
--->
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="description" content="">
-     <meta name="keywords" content="">
-     <meta name="author" content="Tooplate">
-     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-     <link rel="stylesheet" href="{% static 'guest/css/bootstrap.min.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/font-awesome.min.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/animate.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/owl.carousel.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/owl.theme.default.min.css' %}">
-
-     <!-- MAIN CSS -->
-     <link rel="stylesheet" href="{% static 'guest/css/tooplate-style.css' %}">
-
-</head>
-<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
-
-     <!-- PRE LOADER -->
-     <section class="preloader">
-          <div class="spinner">
-
-               <span class="spinner-rotate"></span>
-               
-          </div>
-     </section>
-
-
-     <!-- HEADER -->
-     <header>
-          <div class="container">
-               <div class="row">
-
-                    <div class="col-md-4 col-sm-5">
-                         <p>Welcome to a Professional Health Care</p>
-                    </div>
-                         
-                    <div class="col-md-8 col-sm-7 text-align-right">
-                         <span class="phone-icon"><i class="fa fa-phone"></i> 010-060-0160</span>
-                         <span class="date-icon"><i class="fa fa-calendar-plus-o"></i> 6:00 AM - 10:00 PM (Mon-Fri)</span>
-                         <span class="email-icon"><i class="fa fa-envelope-o"></i> <a href="#">info@company.com</a></span>
-                    </div>
-
-               </div>
-          </div>
-     </header>
-<section class="navbar navbar-default navbar-static-top" role="navigation">
-          <div class="container">
-
-               <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button>
-
-                    <!-- lOGO TEXT HERE -->
-                    <a href="index.html" class="navbar-brand">NeuroSense</a>
-               </div>
-
-               <!-- MENU LINKS -->
-               <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                         <li><a href="#top" class="smoothScroll">Home</a></li>
-                         <li><a href="{% url 'dashboard:qview' %}" class="smoothScroll">Questions</a></li>
-                         <li><a href="#team" class="smoothScroll">Reports</a></li>
-                         <li><a href="{% url 'patient:vcon' %}" class="smoothScroll">Councellors</a></li>
-                         <li class="appointment-btn"><a href="{% url 'dashboard:login' %}">Log Out</a></li>
-                    </ul>
-               </div>
-
-          </div>
-     </section>
+{% include "layout/partials/user/header.html" %}
 
 
      <!-- MENU -->
@@ -139,7 +54,7 @@ http://www.tooplate.com/view/2098-health
 
                     <div class="col-md-6 col-sm-6">
                          <div class="about-info">
-                              <h2 class="wow fadeInUp" data-wow-delay="0.6s">Welcome to NeuroSense"></h2>
+                              <h2 class="wow fadeInUp" data-wow-delay="0.6s">Welcome to NeuroSense {{ request.user.name }}"></h2>
                               <div class="wow fadeInUp" data-wow-delay="0.8s">
                                    <p>“By combining medical knowledge with intelligent systems, we can detect emotional distress early and guide individuals toward healing.”</p>
                                    <p> Listening is the first step in treating depression — technology helps us listen better.</p>

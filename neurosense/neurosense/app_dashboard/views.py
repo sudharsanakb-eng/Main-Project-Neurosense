@@ -6,6 +6,11 @@ from app_dashboard.models import customer
 from app_core.models import Question, councellor
 from neurosense.users.models import User
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
+from django.contrib.auth import logout
+
+
 # Create your views here.
 def appdash(request):
     return render(request,"admin.html")
@@ -27,7 +32,7 @@ def login_view(request):
             if user.role=="councillor":
                 con=councellor.objects.get(user=user)
                 if con.status=="Accept":
-                    return HttpResponse("<script>alert('Login Successfully');window.location='/councellor/vcusto/';</script>" )
+                    return HttpResponse("<script>alert('Login Successfully');window.location='/councellor/vhome/';</script>" )
                 else:
                     return HttpResponse("<script>alert('Verification pending..PLease wait!!!!!');window.location='/dashboard/counsellor/';</script>" )
 
@@ -134,3 +139,9 @@ def con(request):
         return HttpResponse("<script>alert('Insertion sucessfull');window.location='/dashboard/con';</script>")
     else:
         return render(request, "councillor.html")
+
+def logout_view(request):
+    logout(request)
+    return HttpResponse(
+        "<script>alert('Logged out successfully');window.location='/login/';</script>"
+    )

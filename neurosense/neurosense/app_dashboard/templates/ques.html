@@ -1,125 +1,106 @@
-<!-- MAKE AN APPOINTMENT -->
 {% load static %}
+{% include "layout/partials/user/header.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<style>
+/* Section Background */
+.question-section {
+    padding: 80px 0;
+    background: #f4f7fb;
+}
 
-     <title>Health/Mental - Medical Website Template</title>
-<!--
+/* Card Container */
+.question-card {
+    background: #ffffff;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
 
-Template 2098 Health
+/* Title */
+.question-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #2c3e50;
+}
 
-http://www.tooplate.com/view/2098-health
+/* Question Label */
+.question-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
 
--->
-     <meta charset="UTF-8">
-     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-     <meta name="description" content="">
-     <meta name="keywords" content="">
-     <meta name="author" content="Tooplate">
-     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+/* Input Styling */
+.question-input {
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ddd;
+    transition: 0.3s;
+    margin-bottom: 20px;
+}
 
-     <link rel="stylesheet" href="{% static 'guest/css/bootstrap.min.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/font-awesome.min.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/animate.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/owl.carousel.css' %}">
-     <link rel="stylesheet" href="{% static 'guest/css/owl.theme.default.min.css' %}">
+.question-input:focus {
+    border-color: #a5c422;
+    box-shadow: 0 0 0 2px rgba(165,196,34,0.2);
+    outline: none;
+}
 
-     <!-- MAIN CSS -->
-     <link rel="stylesheet" href="{% static 'guest/css/tooplate-style.css' %}">
+/* Submit Button */
+.submit-btn {
+    background-color: #a5c422;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    border: none;
+    font-weight: 600;
+    transition: 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
 
-</head>
-<body id="top" data-spy="scroll" data-target=".navbar-collapse" data-offset="50">
+.submit-btn:hover {
+    background-color: #8cab1b;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+</style>
 
-     <!-- PRE LOADER -->
-     <section class="preloader">
-          <div class="spinner">
-
-               <span class="spinner-rotate"></span>
-               
-          </div>
-     </section>
-
-
-     <!-- HEADER -->
-     <header>
-          <div class="container">
-               <div class="row">
-
-                    <div class="col-md-4 col-sm-5">
-                         <p>Welcome to a Professional Health Care</p>
-                    </div>
-                         
-                    <div class="col-md-8 col-sm-7 text-align-right">
-                         <span class="phone-icon"><i class="fa fa-phone"></i> 010-060-0160</span>
-                         <span class="date-icon"><i class="fa fa-calendar-plus-o"></i> 6:00 AM - 10:00 PM (Mon-Fri)</span>
-                         <span class="email-icon"><i class="fa fa-envelope-o"></i> <a href="#">info@company.com</a></span>
-                    </div>
-
-               </div>
-          </div>
-     </header>
-<section class="navbar navbar-default navbar-static-top" role="navigation">
-          <div class="container">
-
-               <div class="navbar-header">
-                    <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                         <span class="icon icon-bar"></span>
-                    </button>
-
-                    <!-- lOGO TEXT HERE -->
-                    <a href="index.html" class="navbar-brand">NeuroSense</a>
-               </div>
-
-               <!-- MENU LINKS -->
-               <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                         <li><a href="#top" class="smoothScroll">Home</a></li>
-                         <li><a href="{% url 'dashboard:qview' %}" class="smoothScroll">Questions</a></li>
-                         <li><a href="#team" class="smoothScroll">Reports</a></li>
-                         <li><a href="{% url 'patient:vcon' %}" class="smoothScroll">Councellors</a></li>
-                         <li class="appointment-btn"><a href="{% url 'dashboard:login' %}">Log Out</a></li>
-                    </ul>
-               </div>
-
-          </div>
-     </section>
-
-
-<section id="appointment" data-stellar-background-ratio="3">
+<section class="question-section">
     <div class="container">
-        <div class="row">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
 
-            <div class="col-md-6 col-sm-6">
-                <img src="{% static 'guest/images/appointment-image.jpg' %}" class="img-responsive" alt="">
+                <div class="question-card">
+                    <h2 class="question-title">Questions</h2>
+
+                    <form method="POST" action="{% url 'dashboard:qview' %}">
+                        {% csrf_token %}
+
+                        {% for i in vdi %}
+                        <div class="form-group">
+                            <label class="question-label">
+                                {{ i.question }}
+                            </label>
+                            <input type="text" 
+                                   name="question_{{ forloop.counter }}" 
+                                   class="form-control question-input" 
+                                   placeholder="Type your answer here..." 
+                                   required>
+                        </div>
+                        {% endfor %}
+
+                        <button type="submit" class="submit-btn">
+                            Submit Answers
+                        </button>
+
+                    </form>
+                </div>
+
             </div>
-
-            <div class="col-md-6 col-sm-6">
-                <!-- CONTACT FORM HERE -->
-                <form id="appointment-form" role="form" method="POST" action="{% url 'dashboard:qview'  %}">
-                    {% csrf_token %}
-
-
-                    <!-- SECTION TITLE -->
-                    <div class="section-title wow fadeInUp" data-wow-delay="0.4s">
-                        <h2>Questions </h2>
-                    </div>
-                    {% for i in vdi %}
-
-
-                    <div class="col-md-12 col-sm-12">
-                        <label for="telephone">{{i.question}}</label>
-                        <input type="text" class="form-control" id="question" name="question" placeholder="Answer">
-                        
-                    </div>
-                    {% endfor %}
-                    <button type="submit" class="form-control" id="cf-submit" name="submit">SUBMIT</button>
-            </form>
-             </div>
         </div>
     </div>
 </section>
+
 {% include "layout/partials/guest/footer.html" %}
