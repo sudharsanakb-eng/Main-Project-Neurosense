@@ -18,4 +18,6 @@ urlpatterns = [
     path("qview/",views.qview,name='qview'),
     path('con/',views.con,name='con'),
     path("logout/",views.logout_view,name='logout'),
+    path("analysis/",views.predict_view,name='analysis'),
+
 ]

@@ -73,7 +73,12 @@ def app(request, id):
         total_minutes = booked_count * duration_minutes
         appointment_time = start_time + timedelta(minutes=total_minutes)
         appointment_time = appointment_time.time()
-
+        today = date.today()
+    # 4️⃣ Render Page
+    
+           
+       
+    
         # ⚠️ If you want to store appointment_time,
         # add TimeField in Appointment model
 
@@ -97,7 +102,9 @@ def app(request, id):
         {
             "councellor": counc,
             "customer": profile,
-            "id": id
+            "id": id, 
+            "today":today
+            
         }
     )
 

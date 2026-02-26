@@ -106,7 +106,14 @@
                                 Not Selected
                             </span>
                         </div>
-
+                              <input type="date"
+                                   name="date"
+                                   id="dateInput"
+                                   class="form-control"
+                                   required
+                                   min="{{ today|date:'Y-m-d' }}"
+                                   onchange="displaydate()"
+                                   style="padding: 15px; border-radius: 10px; border: 2px solid #e8f2fd;">
                         <hr>
 
                         <div class="d-flex justify-content-between mb-4">

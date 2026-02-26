@@ -1,0 +1,185 @@
+{% extends "user_layout.html" %}
+{% block title %}Your Assessment Result | Serenite{% endblock %}
+{% block content %}
+
+<style>
+.glass{
+  background:rgba(255,255,255,0.65);
+  backdrop-filter:blur(10px);
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+.lock-banner{
+  background:#f3e3b0;
+  border-radius:14px;
+  padding:16px;
+  font-weight:600;
+}
+.day-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:#dee2e6;
+  margin:auto;
+}
+.day-dot.active{
+  background:#0d6efd;
+}
+</style>
+
+<div class="row justify-content-center">
+<div class="col-lg-8">
+
+<!-- Header -->
+<div class="glass p-4 mb-4">
+  <h4 class="fw-bold mb-1">Your Mental Health Assessment Result</h4>
+  <p class="text-muted mb-0">AI-driven insight based on your latest responses</p>
+</div>
+
+<!-- Availability Section -->
+<div class="glass p-4 mb-4 text-center">
+{% if allow_new %}
+<span class="badge bg-success px-3 py-2 fs-6">
+  Next Assessment Available Now
+</span>
+{% else %}
+<div class="lock-banner">
+  Next assessment available in
+  <div id="countdownTimer" class="fs-5 mt-2"></div>
+</div>
+<div id="seconds" data-sec="{{ remaining_seconds|default:0 }}"></div>
+{% endif %}
+</div>
+
+<!-- Series Progress -->
+<div class="glass p-4 mb-4">
+<h6 class="fw-bold mb-3">Assessment Series Progress</h6>
+
+{% if series_complete %}
+<div class="alert alert-success mb-3">
+  5-Day Analysis Series Completed 🎉
+</div>
+{% else %}
+<div class="alert alert-info mb-3">
+  Series Currently In Progress
+</div>
+{% endif %}
+
+<div class="progress mb-3" style="height:14px">
+  <div class="progress-bar bg-primary"
+       style="width: {{ series_progress|default:0 }}%">
+  </div>
+</div>
+
+<div class="d-flex justify-content-between text-center">
+{% for i in "12345" %}
+<div>
+  <div class="day-dot {% if forloop.counter <= completed_days %}active{% endif %}"></div>
+  <small class="text-muted d-block mt-1">
+    Day {{ forloop.counter }}
+  </small>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<!-- 🔥 Prediction Result -->
+<div class="glass p-5 text-center mb-4">
+
+<h3 class="fw-bold text-primary mb-3">Latest Result</h3>
+
+<!-- Risk Badge -->
+<div class="mb-3">
+<span class="badge px-4 py-2 fs-5
+{% if risk_level == 'Low' %}
+  bg-success
+{% elif risk_level == 'Moderate' %}
+  bg-warning text-dark
+{% elif risk_level == 'High' %}
+  bg-danger
+{% else %}
+  bg-secondary
+{% endif %}
+">
+  {{ risk_level }} Risk
+</span>
+</div>
+
+<!-- Probability -->
+<div class="display-5 fw-bold mb-3">
+  {{ probability|default:"0.00" }}%
+</div>
+
+<!-- Risk Meter Bar -->
+<div class="progress mb-4" style="height:20px;">
+  <div class="progress-bar
+  {% if risk_level == 'Low' %}
+    bg-success
+  {% elif risk_level == 'Moderate' %}
+    bg-warning
+  {% else %}
+    bg-danger
+  {% endif %}"
+  style="width: {{ probability|default:0 }}%;">
+  </div>
+</div>
+
+<p class="text-muted mb-3">
+  Based on stress, workload, sleep, and behavioral indicators.
+</p>
+
+<!-- Interpretation -->
+<div class="alert alert-light border mt-3">
+  {{ interpretation }}
+</div>
+
+<small class="text-muted">
+  Processing Time: {{ duration|default:"0.00" }} seconds
+</small>
+
+</div>
+
+<!-- Action Buttons -->
+<div class="glass p-4">
+<div class="row g-3">
+<div class="col-md-6">
+<a href="{% url 'analysis' %}" class="btn btn-primary w-100">
+  Go to Assessment
+</a>
+</div>
+<div class="col-md-6">
+<a href="{% url 'suggestions' %}" class="btn btn-outline-secondary w-100">
+  View Suggestions
+</a>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+{% if not allow_new %}
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  let sec = parseInt(document.getElementById("seconds")?.dataset.sec || 0);
+  const out = document.getElementById("countdownTimer");
+
+  function tick(){
+    if(sec<=0){
+      out.innerText="Available Now";
+      return;
+    }
+    const d=Math.floor(sec/86400);
+    const h=Math.floor((sec%86400)/3600);
+    const m=Math.floor((sec%3600)/60);
+    const s=sec%60;
+    out.innerText=`${d}d ${h}h ${m}m ${s}s`;
+    sec--;
+  }
+  tick();
+  setInterval(tick,1000);
+});
+</script>
+{% endif %}
+
+{% endblock %}

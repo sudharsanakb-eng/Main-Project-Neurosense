@@ -143,5 +143,130 @@ def con(request):
 def logout_view(request):
     logout(request)
     return HttpResponse(
-        "<script>alert('Logged out successfully');window.location='/login/';</script>"
+        "<script>alert('Logged out successfully');window.location='/dashboard/login/';</script>"
     )
+
+import os
+import json
+import time
+import pandas as pd
+from django.shortcuts import render
+from catboost import CatBoostClassifier, Pool
+
+
+# -------------------------------------------------
+# Load Model & Feature Columns (Load Once)
+# -------------------------------------------------
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+MODEL_PATH = os.path.join(BASE_DIR, "depression_model.cbm")
+FEATURE_PATH = os.path.join(BASE_DIR, "feature_columns.json")
+
+model = CatBoostClassifier()
+model.load_model(MODEL_PATH)
+
+with open(FEATURE_PATH, "r") as f:
+    feature_columns = json.load(f)
+
+
+# -------------------------------------------------
+# Prediction View
+# -------------------------------------------------
+
+def predict_view(request):
+
+    print("RAW POST DATA:")
+    for key, value in request.POST.items():
+      print(f"{key} → {value} ({type(value)})")
+
+    if request.method == "POST":
+        start_time = time.time()
+
+        try:
+            # -----------------------------
+            # 1️⃣ Collect Form Data (MUST MATCH TRAINING EXACTLY)
+            # -----------------------------
+            print('inside')
+            person = {
+                "Gender": request.POST.get("Gender"),
+                "Age": float(request.POST.get("Age")),
+                "City": request.POST.get("City"),
+                "Working Professional or Student": request.POST.get("Working Professional or Student"),
+                "Profession": request.POST.get("Profession"),
+                "Work Pressure": float(request.POST.get("Work Pressure")),
+                "Job Satisfaction": float(request.POST.get("Job Satisfaction")),
+                "Sleep Duration": request.POST.get("Sleep Duration"),
+                "Dietary Habits": request.POST.get("Dietary Habits"),
+                "Degree": request.POST.get("Degree"),
+                "Have you ever had suicidal thoughts ?": request.POST.get("Have you ever had suicidal thoughts ?"),
+                "Work/Study Hours": float(request.POST.get("Work/Study Hours")),
+                "Financial Stress": float(request.POST.get("Financial Stress")),
+                "Family History of Mental Illness": request.POST.get("Family History of Mental Illness")
+            }
+            print('person details')
+            print(person)
+
+            # -----------------------------
+            # 2️⃣ Convert to DataFrame
+            # -----------------------------
+            df = pd.DataFrame([person])
+
+            # Ensure correct feature order
+            df = df[feature_columns]
+
+            
+
+            # Identify categorical columns
+            cat_cols = df.select_dtypes(include="object").columns.tolist()
+
+            test_pool = Pool(data=df, cat_features=cat_cols)
+
+            # -----------------------------
+            # 3️⃣ Get Probability of Depression (class 1)
+            # -----------------------------
+            prob = model.predict_proba(test_pool)[0][1]
+
+            # -----------------------------
+            # 4️⃣ Custom Threshold (Screening Friendly)
+            # -----------------------------
+            threshold = 0.35
+            prediction = 1 if prob >= threshold else 0
+
+            # -----------------------------
+            # 5️⃣ Risk Classification
+            # -----------------------------
+            if prob < 0.40:
+                risk_level = "Low"
+                risk_color = "green"
+                interpretation = "No significant depressive indicators detected."
+            elif prob < 0.70:
+                risk_level = "Moderate"
+                risk_color = "orange"
+                interpretation = "Moderate depressive indicators detected. Monitoring is recommended."
+            else:
+                risk_level = "High"
+                risk_color = "red"
+                interpretation = "High depressive risk detected. Professional consultation is strongly advised."
+
+            end_time = time.time()
+
+            context = {
+                "risk_level": risk_level,
+                "risk_color": risk_color,
+                "probability": round(prob * 100, 2),
+                "interpretation": interpretation,
+                "duration": round(end_time - start_time, 3)
+            }
+
+            return render(request, "result.html", context)
+
+        except Exception as e:
+            return render(request, "result.html", {
+                "risk_level": "Error",
+                "risk_color": "black",
+                "probability": 0,
+                "interpretation": f"Prediction failed: {str(e)}"
+            })
+
+    return render(request, "analysis.html")

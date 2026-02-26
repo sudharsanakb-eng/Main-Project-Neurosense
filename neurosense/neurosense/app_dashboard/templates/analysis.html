@@ -1,0 +1,1062 @@
+{% extends "user_layout.html" %}
+{% block title %}Mental Health Analysis{% endblock %}
+{% block content %}
+
+<style>
+.glass-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 28px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 100, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.countdown-card {
+    background: linear-gradient(135deg, #f3e3b0, #f5e9c4);
+    padding: 18px;
+    border-radius: 18px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
+}
+
+.gradient-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #3aa6ff, #5bd6a2);
+    border-radius: 10px;
+}
+
+.toast {
+    backdrop-filter: blur(6px);
+    border-radius: 16px;
+    font-weight: 500;
+}
+
+.question-option {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    margin: 30px 0 20px;
+}
+
+.option-btn {
+    padding: 14px 32px;
+    border: 2px solid rgba(222, 226, 230, 0.6);
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02);
+}
+
+.option-btn:hover {
+    background: #f1f4f9;
+    border-color: #a0b8d4;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 100, 255, 0.1);
+}
+
+.option-btn.selected {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    border-color: #0d6efd;
+    color: white;
+    box-shadow: 0 8px 16px rgba(13, 110, 253, 0.25);
+}
+
+.form-select-custom {
+    width: 100%;
+    max-width: 450px;
+    margin: 25px auto 15px;
+    padding: 16px 24px;
+    border-radius: 50px;
+    border: 2px solid rgba(222, 226, 230, 0.7);
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1a2634;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5a6e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 20px center;
+}
+
+.form-select-custom:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+.age-input, .other-input {
+    width: 100%;
+    max-width: 200px;
+    margin: 25px auto 15px;
+    padding: 16px 24px;
+    border-radius: 50px;
+    border: 2px solid rgba(222, 226, 230, 0.7);
+    background: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
+    display: block;
+}
+
+.other-input {
+    max-width: 350px;
+    margin-top: 10px;
+}
+
+.age-input:focus, .other-input:focus {
+    outline: none;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+}
+
+.slider-container {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 30px 20px;
+    border-radius: 40px;
+    margin: 20px 0;
+}
+
+.slider-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #0d6efd;
+    text-shadow: 0 2px 8px rgba(13, 110, 253, 0.2);
+    margin-top: 10px;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5a6e;
+    padding: 0 10px;
+    margin-bottom: 8px;
+}
+
+.form-range {
+    height: 8px;
+    background: linear-gradient(90deg, #e9ecef, #dee2e6);
+    border-radius: 10px;
+}
+
+.form-range::-webkit-slider-thumb {
+    background: #0d6efd;
+    width: 22px;
+    height: 22px;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.4);
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.form-range::-moz-range-thumb {
+    background: #0d6efd;
+    width: 22px;
+    height: 22px;
+    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.4);
+    border: none;
+    border-radius: 50%;
+}
+
+.progress-steps {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: #dee2e6;
+    transition: all 0.3s;
+}
+
+.step-dot.active {
+    width: 24px;
+    background: linear-gradient(90deg, #3aa6ff, #5bd6a2);
+}
+
+.step-dot.completed {
+    background: #0d6efd;
+}
+
+.btn-premium {
+    padding: 14px 32px;
+    border-radius: 40px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    border: none;
+}
+
+.btn-premium-primary {
+    background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+    color: white;
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.3);
+}
+
+.btn-premium-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(13, 110, 253, 0.4);
+}
+
+.btn-premium-secondary {
+    background: rgba(255, 255, 255, 0.9);
+    color: #2c3e50;
+    border: 2px solid rgba(222, 226, 230, 0.8);
+}
+
+.btn-premium-secondary:hover {
+    background: white;
+    border-color: #a0b8d4;
+}
+
+.text-center-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+select.form-select-custom {
+    text-align: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sleepContainer select,
+#professionContainer select,
+#degreeContainer select {
+    text-align: left;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#otherProfessionContainer {
+    margin-top: 10px;
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #1a2634, #2c3e50);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-size: 2rem;
+}
+</style>
+
+<div class="container mt-4">
+
+<div class="glass-card p-4 mb-4">
+    <h3 class="fw-bold gradient-text">Mental Health Assessment</h3>
+    <p class="text-muted" style="font-size: 1.1rem; letter-spacing: 0.3px;">AI-Powered Psychological Screening</p>
+</div>
+
+<!-- Success Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                Assessment submitted! AI analysis in progress. Redirecting to results...
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- LOCK SECTION -->
+{% if not allow %}
+<div class="glass-card p-5 text-center">
+    <h4 class="fw-bold mb-4">Next Assessment Locked</h4>
+    <div id="countdownBox" class="countdown-card" data-seconds="{{ remaining_seconds|default:0 }}">
+        Available in <span id="countdownTimer" class="fw-bold text-primary"></span>
+    </div>
+    <p class="text-muted mt-4">You can take another assessment after 3 days</p>
+</div>
+
+<script>
+const box = document.getElementById("countdownBox");
+let seconds = parseInt(box.dataset.seconds);
+
+function updateTimer() {
+    if (seconds <= 0) { location.reload(); return; }
+    let d = Math.floor(seconds / 86400);
+    let h = Math.floor((seconds % 86400) / 3600);
+    let m = Math.floor((seconds % 3600) / 60);
+    let s = seconds % 60;
+    document.getElementById("countdownTimer").innerText = `${d}d ${h}h ${m}m ${s}s`;
+    seconds--;
+}
+setInterval(updateTimer, 1000);
+updateTimer();
+</script>
+
+{% else %}
+
+<!-- QUESTIONNAIRE -->
+<div class="glass-card p-5" id="questionCard">
+
+    <!-- Progress Steps -->
+    <div class="progress-steps" id="progressSteps"></div>
+
+    <h4 class="fw-semibold text-center mb-4" id="questionText" style="font-size: 1.5rem; color: #1a2634;"></h4>
+
+    <!-- User Type Selection -->
+    <div id="selectionContainer" class="text-center mb-4" style="display: none;">
+        <div class="question-option">
+            <div class="option-btn" onclick="selectUserType('Student', this)">🎓 Student</div>
+            <div class="option-btn" onclick="selectUserType('Working Professional', this)">💼 Working Professional</div>
+        </div>
+    </div>
+
+    <!-- Profession Selection -->
+    <div id="professionContainer" style="display: none;" class="text-center-block">
+        <select id="professionSelect" class="form-select-custom" onchange="handleProfessionChange()">
+            <option value="">Select your profession</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Financial Analyst">Financial Analyst</option>
+            <option value="UX/UI Designer">UX/UI Designer</option>
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Doctor">Doctor</option>
+            <option value="Lawyer">Lawyer</option>
+            <option value="Consultant">Consultant</option>
+            <option value="Manager">Manager</option>
+            <option value="Entrepreneur">Entrepreneur</option>
+            <option value="Architect">Architect</option>
+            <option value="Data Scientist">Data Scientist</option>
+            <option value="Civil Engineer">Civil Engineer</option>
+            <option value="Content Writer">Content Writer</option>
+            <option value="HR Manager">HR Manager</option>
+            <option value="Marketing Manager">Marketing Manager</option>
+            <option value="Business Analyst">Business Analyst</option>
+            <option value="Pharmacist">Pharmacist</option>
+            <option value="Chef">Chef</option>
+            <option value="Other">Other (please specify)</option>
+        </select>
+        <div id="otherProfessionContainer" style="display: none;">
+            <input type="text" id="otherProfessionInput" class="other-input" placeholder="Enter your profession">
+        </div>
+    </div>
+
+    <!-- Degree Selection -->
+    <div id="degreeContainer" style="display: none;" class="text-center-block">
+        <select id="degreeSelect" class="form-select-custom">
+            <option value="">Select your degree</option>
+            <option value="High School">High School (Class 12)</option>
+            <option value="Bachelor's">Bachelor's Degree</option>
+            <option value="Master's">Master's Degree</option>
+            <option value="PhD">PhD</option>
+            <option value="MBBS">MBBS</option>
+            <option value="LLB">LLB</option>
+            <option value="B.Tech">B.Tech</option>
+            <option value="M.Tech">M.Tech</option>
+            <option value="BBA">BBA</option>
+            <option value="MBA">MBA</option>
+            <option value="BCA">BCA</option>
+            <option value="MCA">MCA</option>
+            <option value="B.Com">B.Com</option>
+            <option value="M.Com">M.Com</option>
+            <option value="BA">BA</option>
+            <option value="MA">MA</option>
+            <option value="B.Sc">B.Sc</option>
+            <option value="M.Sc">M.Sc</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+
+    <!-- Gender Selection -->
+    <div id="genderContainer" style="display: none;">
+        <div class="question-option">
+            <div class="option-btn" onclick="selectGender('Male', this)">♂️ Male</div>
+            <div class="option-btn" onclick="selectGender('Female', this)">♀️ Female</div>
+        </div>
+    </div>
+
+    <!-- Age Input -->
+    <div id="ageContainer" style="display: none;" class="text-center-block">
+        <input type="number" id="ageInput" class="age-input" min="13" max="100" placeholder="Your age" value="25">
+    </div>
+
+    <!-- Slider Container -->
+    <div id="sliderContainer" style="display: none;">
+        <div class="slider-container">
+            <div class="slider-labels">
+                <span id="labelLeft"></span>
+                <span id="labelRight"></span>
+            </div>
+            <input type="range" id="answerRange" class="form-range">
+            <div class="text-center slider-value" id="answerValue">3</div>
+        </div>
+    </div>
+
+    <!-- Sleep Duration -->
+    <div id="sleepContainer" style="display: none;" class="text-center-block">
+        <select id="sleepSelect" class="form-select-custom">
+            <option value="">Select sleep duration</option>
+            <option value="Less than 5 hours">😴 Less than 5 hours</option>
+            <option value="5-6 hours">😌 5-6 hours</option>
+            <option value="7-8 hours">😊 7-8 hours</option>
+            <option value="More than 8 hours">😎 More than 8 hours</option>
+        </select>
+    </div>
+
+    <!-- Dietary Habits -->
+    <div id="dietContainer" style="display: none;">
+        <div class="question-option">
+            <div class="option-btn" onclick="selectDiet('Unhealthy', this)">🍔 Unhealthy</div>
+            <div class="option-btn" onclick="selectDiet('Moderate', this)">🥗 Moderate</div>
+            <div class="option-btn" onclick="selectDiet('Healthy', this)">🥑 Healthy</div>
+        </div>
+    </div>
+
+    <!-- Yes/No Questions -->
+    <div id="yesNoContainer" style="display: none;">
+        <div class="question-option">
+            <div class="option-btn" onclick="selectYesNo('Yes', this)">✓ Yes</div>
+            <div class="option-btn" onclick="selectYesNo('No', this)">✗ No</div>
+        </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="d-flex justify-content-between mt-5">
+        <button class="btn btn-premium btn-premium-secondary" onclick="prevQuestion()">
+            ← Previous
+        </button>
+        <button class="btn btn-premium btn-premium-primary" onclick="nextQuestion()" id="nextBtn">
+            Next →
+        </button>
+    </div>
+
+</div>
+
+<script>
+let current = 0;
+let totalQuestions = 0;
+const answers = {
+    gender: null,
+    age: null,
+    user_type: null,
+    profession: "",
+    degree: "",
+    academic_pressure: 3,
+    work_pressure: 3,
+    cgpa: 7.0,
+    study_satisfaction: 3,
+    job_satisfaction: 3,
+    sleep_duration: "",
+    dietary_habits: "",
+    suicidal_thoughts: "",
+    family_history: "",
+    work_study_hours: 6,
+    financial_stress: 3
+};
+
+// DOM Elements
+const questionText = document.getElementById("questionText");
+const selectionContainer = document.getElementById("selectionContainer");
+const professionContainer = document.getElementById("professionContainer");
+const degreeContainer = document.getElementById("degreeContainer");
+const genderContainer = document.getElementById("genderContainer");
+const ageContainer = document.getElementById("ageContainer");
+const sliderContainer = document.getElementById("sliderContainer");
+const sleepContainer = document.getElementById("sleepContainer");
+const dietContainer = document.getElementById("dietContainer");
+const yesNoContainer = document.getElementById("yesNoContainer");
+const answerRange = document.getElementById("answerRange");
+const answerValue = document.getElementById("answerValue");
+const labelLeft = document.getElementById("labelLeft");
+const labelRight = document.getElementById("labelRight");
+const nextBtn = document.getElementById("nextBtn");
+const progressSteps = document.getElementById("progressSteps");
+const professionSelect = document.getElementById("professionSelect");
+const otherProfessionContainer = document.getElementById("otherProfessionContainer");
+const otherProfessionInput = document.getElementById("otherProfessionInput");
+
+function handleProfessionChange() {
+    if (professionSelect.value === "Other") {
+        otherProfessionContainer.style.display = "block";
+    } else {
+        otherProfessionContainer.style.display = "none";
+        if (professionSelect.value) {
+            answers.profession = professionSelect.value;
+        }
+    }
+}
+
+function selectUserType(value, element) {
+    document.querySelectorAll('[onclick^="selectUserType"]').forEach(el => {
+        el.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    answers.user_type = value;
+}
+
+function selectGender(value, element) {
+    document.querySelectorAll('[onclick^="selectGender"]').forEach(el => {
+        el.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    answers.gender = value;
+}
+
+function selectDiet(value, element) {
+    document.querySelectorAll('[onclick^="selectDiet"]').forEach(el => {
+        el.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    answers.dietary_habits = value;
+}
+
+function selectYesNo(value, element) {
+    document.querySelectorAll('[onclick^="selectYesNo"]').forEach(el => {
+        el.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    
+    const currentText = questionText.innerText.toLowerCase();
+    if (currentText.includes('suicidal')) {
+        answers.suicidal_thoughts = value;
+    } else if (currentText.includes('family history')) {
+        answers.family_history = value;
+    }
+}
+
+function updateProgressSteps() {
+    let steps = '';
+    const total = answers.user_type === "Student" ? 12 : 13;
+    
+    for (let i = 0; i <= total; i++) {
+        let stepClass = 'step-dot';
+        if (i < current) stepClass += ' completed';
+        else if (i === current) stepClass += ' active';
+        steps += `<span class="${stepClass}"></span>`;
+    }
+    progressSteps.innerHTML = steps;
+}
+
+function loadQuestion() {
+    // Hide all containers
+    selectionContainer.style.display = "none";
+    professionContainer.style.display = "none";
+    degreeContainer.style.display = "none";
+    genderContainer.style.display = "none";
+    ageContainer.style.display = "none";
+    sliderContainer.style.display = "none";
+    sleepContainer.style.display = "none";
+    dietContainer.style.display = "none";
+    yesNoContainer.style.display = "none";
+    
+    if (current === 0) {
+        questionText.innerText = "Are you a Student or Working Professional?";
+        selectionContainer.style.display = "block";
+        nextBtn.innerText = "Next";
+        updateProgressSteps();
+        return;
+    }
+    
+    if (current === 1) {
+        questionText.innerText = "Select your gender:";
+        genderContainer.style.display = "block";
+        nextBtn.innerText = "Next";
+        updateProgressSteps();
+        return;
+    }
+    
+    if (current === 2) {
+        questionText.innerText = "Enter your age:";
+        ageContainer.style.display = "block";
+        document.getElementById("ageInput").value = answers.age || 25;
+        nextBtn.innerText = "Next";
+        updateProgressSteps();
+        return;
+    }
+    
+    if (current === 3) {
+        if (answers.user_type === "Student") {
+            questionText.innerText = "What is your current degree?";
+        } else {
+            questionText.innerText = "What is your highest degree?";
+        }
+        degreeContainer.style.display = "block";
+        if (answers.degree) {
+            document.getElementById("degreeSelect").value = answers.degree;
+        }
+        nextBtn.innerText = "Next";
+        updateProgressSteps();
+        return;
+    }
+    
+    if (current === 4 && answers.user_type === "Working Professional") {
+        questionText.innerText = "What is your profession?";
+        professionContainer.style.display = "block";
+        if (answers.profession && !answers.profession.includes("Other:")) {
+            professionSelect.value = answers.profession;
+        } else if (answers.profession && answers.profession.includes("Other:")) {
+            professionSelect.value = "Other";
+            otherProfessionContainer.style.display = "block";
+            otherProfessionInput.value = answers.profession.replace("Other: ", "");
+        }
+        nextBtn.innerText = "Next";
+        updateProgressSteps();
+        return;
+    }
+    
+    // Student flow (after degree)
+    if (answers.user_type === "Student") {
+        if (current === 4) {
+            questionText.innerText = "Rate your academic pressure (1-5):";
+            sliderContainer.style.display = "block";
+            answerRange.min = 1; answerRange.max = 5; answerRange.step = 1;
+            answerRange.value = answers.academic_pressure;
+            labelLeft.innerText = "Very Low"; labelRight.innerText = "Very High";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 5) {
+            questionText.innerText = "What is your CGPA? (0-10)";
+            sliderContainer.style.display = "block";
+            answerRange.min = 0; answerRange.max = 10; answerRange.step = 0.1;
+            answerRange.value = answers.cgpa;
+            labelLeft.innerText = "0"; labelRight.innerText = "10";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 6) {
+            questionText.innerText = "How satisfied are you with your studies? (1-5)";
+            sliderContainer.style.display = "block";
+            answerRange.min = 1; answerRange.max = 5; answerRange.step = 1;
+            answerRange.value = answers.study_satisfaction;
+            labelLeft.innerText = "Low"; labelRight.innerText = "High";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 7) {
+            questionText.innerText = "How many hours do you study per day? (0-12)";
+            sliderContainer.style.display = "block";
+            answerRange.min = 0; answerRange.max = 12; answerRange.step = 1;
+            answerRange.value = answers.work_study_hours;
+            labelLeft.innerText = "0 hrs"; labelRight.innerText = "12 hrs";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 8) {
+            questionText.innerText = "What's your typical sleep duration?";
+            sleepContainer.style.display = "block";
+            if (answers.sleep_duration) {
+                document.getElementById("sleepSelect").value = answers.sleep_duration;
+            }
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 9) {
+            questionText.innerText = "How would you describe your dietary habits?";
+            dietContainer.style.display = "block";
+            // Highlight selected if exists
+            document.querySelectorAll('[onclick^="selectDiet"]').forEach(el => {
+                if (el.innerText.includes(answers.dietary_habits)) {
+                    el.classList.add('selected');
+                }
+            });
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 10) {
+            questionText.innerText = "Have you ever had suicidal thoughts?";
+            yesNoContainer.style.display = "block";
+            // Highlight selected if exists
+            document.querySelectorAll('[onclick^="selectYesNo"]').forEach(el => {
+                if (el.innerText.includes(answers.suicidal_thoughts)) {
+                    el.classList.add('selected');
+                }
+            });
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 11) {
+            questionText.innerText = "Is there a family history of mental illness?";
+            yesNoContainer.style.display = "block";
+            // Highlight selected if exists
+            document.querySelectorAll('[onclick^="selectYesNo"]').forEach(el => {
+                if (el.innerText.includes(answers.family_history)) {
+                    el.classList.add('selected');
+                }
+            });
+            nextBtn.innerText = "Submit";
+            updateProgressSteps();
+            return;
+        }
+    }
+    
+    // Working Professional flow
+    if (answers.user_type === "Working Professional") {
+        if (current === 5) {
+            questionText.innerText = "Rate your work pressure (1-5):";
+            sliderContainer.style.display = "block";
+            answerRange.min = 1; answerRange.max = 5; answerRange.step = 1;
+            answerRange.value = answers.work_pressure;
+            labelLeft.innerText = "Very Low"; labelRight.innerText = "Very High";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 6) {
+            questionText.innerText = "How satisfied are you with your job? (1-5)";
+            sliderContainer.style.display = "block";
+            answerRange.min = 1; answerRange.max = 5; answerRange.step = 1;
+            answerRange.value = answers.job_satisfaction;
+            labelLeft.innerText = "Low"; labelRight.innerText = "High";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 7) {
+            questionText.innerText = "How many hours do you work per day? (0-12)";
+            sliderContainer.style.display = "block";
+            answerRange.min = 0; answerRange.max = 12; answerRange.step = 1;
+            answerRange.value = answers.work_study_hours;
+            labelLeft.innerText = "0 hrs"; labelRight.innerText = "12 hrs";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 8) {
+            questionText.innerText = "What's your typical sleep duration?";
+            sleepContainer.style.display = "block";
+            if (answers.sleep_duration) {
+                document.getElementById("sleepSelect").value = answers.sleep_duration;
+            }
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 9) {
+            questionText.innerText = "How would you describe your dietary habits?";
+            dietContainer.style.display = "block";
+            // Highlight selected if exists
+            document.querySelectorAll('[onclick^="selectDiet"]').forEach(el => {
+                if (el.innerText.includes(answers.dietary_habits)) {
+                    el.classList.add('selected');
+                }
+            });
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 10) {
+            questionText.innerText = "Rate your financial stress level (1-5):";
+            sliderContainer.style.display = "block";
+            answerRange.min = 1; answerRange.max = 5; answerRange.step = 1;
+            answerRange.value = answers.financial_stress;
+            labelLeft.innerText = "Low"; labelRight.innerText = "High";
+            updateSliderValue();
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 11) {
+            questionText.innerText = "Have you ever had suicidal thoughts?";
+            yesNoContainer.style.display = "block";
+            // Highlight selected if exists
+            document.querySelectorAll('[onclick^="selectYesNo"]').forEach(el => {
+                if (el.innerText.includes(answers.suicidal_thoughts)) {
+                    el.classList.add('selected');
+                }
+            });
+            nextBtn.innerText = "Next";
+            updateProgressSteps();
+            return;
+        }
+        
+        if (current === 12) {
+            questionText.innerText = "Is there a family history of mental illness?";
+            yesNoContainer.style.display = "block";
+            // Highlight selected if exists
+            document.querySelectorAll('[onclick^="selectYesNo"]').forEach(el => {
+                if (el.innerText.includes(answers.family_history)) {
+                    el.classList.add('selected');
+                }
+            });
+            nextBtn.innerText = "Submit";
+            updateProgressSteps();
+            return;
+        }
+    }
+}
+
+function updateSliderValue() {
+    if (answers.user_type === "Student") {
+        if (current === 4) {
+            answers.academic_pressure = parseInt(answerRange.value);
+            answerValue.innerText = answers.academic_pressure;
+        } else if (current === 5) {
+            answers.cgpa = parseFloat(answerRange.value).toFixed(1);
+            answerValue.innerText = answers.cgpa;
+        } else if (current === 6) {
+            answers.study_satisfaction = parseInt(answerRange.value);
+            answerValue.innerText = answers.study_satisfaction;
+        } else if (current === 7) {
+            answers.work_study_hours = parseInt(answerRange.value);
+            answerValue.innerText = answers.work_study_hours + " hrs";
+        }
+    } else {
+        if (current === 5) {
+            answers.work_pressure = parseInt(answerRange.value);
+            answerValue.innerText = answers.work_pressure;
+        } else if (current === 6) {
+            answers.job_satisfaction = parseInt(answerRange.value);
+            answerValue.innerText = answers.job_satisfaction;
+        } else if (current === 7) {
+            answers.work_study_hours = parseInt(answerRange.value);
+            answerValue.innerText = answers.work_study_hours + " hrs";
+        } else if (current === 10) {
+            answers.financial_stress = parseInt(answerRange.value);
+            answerValue.innerText = answers.financial_stress;
+        }
+    }
+}
+
+answerRange.addEventListener("input", updateSliderValue);
+
+function nextQuestion() {
+    // Validation
+    if (current === 0 && !answers.user_type) {
+        alert("Please select your role");
+        return;
+    }
+    
+    if (current === 1 && !answers.gender) {
+        alert("Please select your gender");
+        return;
+    }
+    
+    if (current === 2) {
+        const age = document.getElementById("ageInput").value;
+        if (!age || age < 13 || age > 100) {
+            alert("Please enter a valid age (13-100)");
+            return;
+        }
+        answers.age = parseInt(age);
+    }
+    
+    if (current === 3) {
+        const degree = document.getElementById("degreeSelect").value;
+        if (!degree) {
+            alert("Please select your degree");
+            return;
+        }
+        answers.degree = degree;
+    }
+    
+    if (current === 4 && answers.user_type === "Working Professional") {
+        const profession = document.getElementById("professionSelect").value;
+        if (!profession) {
+            alert("Please select your profession");
+            return;
+        }
+        if (profession === "Other") {
+            const otherProfession = document.getElementById("otherProfessionInput").value;
+            if (!otherProfession) {
+                alert("Please specify your profession");
+                return;
+            }
+            answers.profession = "Other: " + otherProfession;
+        } else {
+            answers.profession = profession;
+        }
+    }
+    
+    // Student validations
+    if (answers.user_type === "Student") {
+        if (current === 8) {
+            const sleep = document.getElementById("sleepSelect").value;
+            if (!sleep) {
+                alert("Please select your sleep duration");
+                return;
+            }
+            answers.sleep_duration = sleep;
+        }
+        
+        if (current === 9 && !answers.dietary_habits) {
+            alert("Please select your dietary habits");
+            return;
+        }
+        
+        if (current === 10 && !answers.suicidal_thoughts) {
+            alert("Please select an option for suicidal thoughts");
+            return;
+        }
+        
+        if (current === 11 && !answers.family_history) {
+            alert("Please select an option for family history");
+            return;
+        }
+    }
+    
+    // Working Professional validations
+    if (answers.user_type === "Working Professional") {
+        if (current === 8) {
+            const sleep = document.getElementById("sleepSelect").value;
+            if (!sleep) {
+                alert("Please select your sleep duration");
+                return;
+            }
+            answers.sleep_duration = sleep;
+        }
+        
+        if (current === 9 && !answers.dietary_habits) {
+            alert("Please select your dietary habits");
+            return;
+        }
+        
+        if (current === 11 && !answers.suicidal_thoughts) {
+            alert("Please select an option for suicidal thoughts");
+            return;
+        }
+        
+        if (current === 12 && !answers.family_history) {
+            alert("Please select an option for family history");
+            return;
+        }
+    }
+    
+    const totalQuestions = answers.user_type === "Student" ? 11 : 12;
+    
+    if (current === totalQuestions) {
+        submitAssessment();
+        return;
+    }
+    
+    current++;
+    loadQuestion();
+}
+
+function prevQuestion() {
+    if (current > 0) {
+        current--;
+        loadQuestion();
+    }
+}
+
+function submitAssessment() {
+
+    // Default handling for student
+    if (answers.user_type === "Student") {
+        answers.work_pressure = 0;
+        answers.job_satisfaction = 0;
+        answers.financial_stress = 3;
+        if (!answers.profession) answers.profession = "Student";
+    }
+
+    // Default handling for working professional
+    if (answers.user_type === "Working Professional") {
+        if (!answers.profession) answers.profession = "Other";
+    }
+
+    const submissionData = {
+
+        // 🔹 EXACT MODEL COLUMN NAMES
+        "Gender": answers.gender,
+        "Age": answers.age,
+        "City": "Unknown",
+        "Working Professional or Student": answers.user_type,
+        "Profession": answers.profession,
+        "Work Pressure": answers.work_pressure,
+        "Job Satisfaction": answers.job_satisfaction,
+        "Sleep Duration": answers.sleep_duration,
+        "Dietary Habits": answers.dietary_habits,
+        "Degree": answers.degree,
+        "Have you ever had suicidal thoughts ?": answers.suicidal_thoughts,
+        "Work/Study Hours": answers.work_study_hours,
+        "Financial Stress": answers.financial_stress,
+        "Family History of Mental Illness": answers.family_history
+    };
+
+    console.log("Submitting Correct Data:", submissionData);
+
+    // Toast
+    const toastEl = document.getElementById("successToast");
+    const toast = new bootstrap.Toast(toastEl);
+    toast.show();
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = "{% url 'predict_view' %}";
+
+    // CSRF
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'csrfmiddlewaretoken';
+    csrfInput.value = '{{ csrf_token }}';
+    form.appendChild(csrfInput);
+
+    // Append all correct fields
+    for (const [key, value] of Object.entries(submissionData)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value ?? "";
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+
+    setTimeout(() => {
+        form.submit();
+    }, 1500);
+}
+
+// Initialize
+loadQuestion();
+</script>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
