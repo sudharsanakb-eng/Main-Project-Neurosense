@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate,login
 
 from app_dashboard.models import customer
 from app_core.models import Question, councellor
+from app_patient.models import Result
 from neurosense.users.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
@@ -169,7 +170,6 @@ model.load_model(MODEL_PATH)
 with open(FEATURE_PATH, "r") as f:
     feature_columns = json.load(f)
 
-
 # -------------------------------------------------
 # Prediction View
 # -------------------------------------------------
@@ -212,7 +212,6 @@ def predict_view(request):
             # -----------------------------
             df = pd.DataFrame([person])
 
-            # Ensure correct feature order
             df = df[feature_columns]
 
             
@@ -250,7 +249,26 @@ def predict_view(request):
                 interpretation = "High depressive risk detected. Professional consultation is strongly advised."
 
             end_time = time.time()
+            res=Result()
+            res.patient_id=request.user
+            res.result=round(prob * 100, 2)
+            res.What_is_your_gender=request.POST.get("Gender")
+            res.What_is_your_age=float(request.POST.get("Age"))
+            res.Which_city_do_you_currently_live_in=request.POST.get("City")
+            res.How_would_you_rate_your_work_pressure_level=float(request.POST.get("Work Pressure"))
+            res.working_professional_or_student=request.POST.get("Working Professional or Student")
+            res.What_is_your_profession=request.POST.get("Profession")
+            res.What_is_your_highest_educational_qualification=request.POST.get("Degree")
+            res.How_many_hours_do_you_sleep_on_average_per_day=request.POST.get("Sleep Duration")
+            res.How_satisfied_are_you_with_your_job_or_studies=float(request.POST.get("Job Satisfaction"))
+            res.How_would_you_describe_your_dietary_habits=request.POST.get("Dietary Habits")
+            res.Is_there_any_history_of_mental_illness_in_your_family=request.POST.get("Family History of Mental Illness")
+            res.How_would_you_rate_your_current_financial_stress_level=float(request.POST.get("Financial Stress"))
+            res.How_many_hours_per_day_do_you_spend_working_or_studying=float(request.POST.get("Work/Study Hours"))
+            res.Have_you_ever_experienced_suicidal_thoughts=request.POST.get("Have you ever had suicidal thoughts ?")
+            res.save()
 
+            
             context = {
                 "risk_level": risk_level,
                 "risk_color": risk_color,
@@ -269,4 +287,4 @@ def predict_view(request):
                 "interpretation": f"Prediction failed: {str(e)}"
             })
 
-    return render(request, "analysis.html")
+    return render(request, "analysis.html",{  "allow": True})

@@ -1,6 +1,4 @@
-{% extends "user_layout.html" %}
-{% block title %}Mental Health Analysis{% endblock %}
-{% block content %}
+{% include "header.html" %}
 
 <style>
 .glass-card {
@@ -1026,7 +1024,7 @@ function submitAssessment() {
 
     const form = document.createElement('form');
     form.method = 'POST';
-    form.action = "{% url 'predict_view' %}";
+    form.action = "{% url 'dashboard:analysis' %}";
 
     // CSRF
     const csrfInput = document.createElement('input');
@@ -1059,4 +1057,3 @@ loadQuestion();
 
 </div>
 
-{% endblock %}
