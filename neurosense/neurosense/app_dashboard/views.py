@@ -326,7 +326,7 @@ def download_pdf(request):
     if not result:
         return HttpResponse("No result found")
 
-    probability = result.result  # already percentage
+    probability = float(result.result)  # already percentage
 
     # -----------------------------
     # Risk Classification Again
@@ -352,31 +352,31 @@ def download_pdf(request):
     # -----------------------------
     # PDF Content
     # -----------------------------
-    elements.append(Paragraph("Serenite - Mental Health Assessment Report", styles["Heading1"]))
+    elements.append(Paragraph("Nuerosense - Mental Health Assessment Report", styles["Heading1"]))
     elements.append(Spacer(1, 20))
+    normal_style = styles["Normal"]
 
     data = [
-        ["Risk Level", risk_level],
-        ["Depression Probability", f"{probability}%"],
-        ["Recommended Specialist", specialist],
-        ["Diet Plan", diet_plan],
-        ["Exercise Plan", exercise_plan],
+        [Paragraph("<b>Risk Level</b>", normal_style), Paragraph(risk_level, normal_style)],
+        [Paragraph("<b>Depression Probability</b>", normal_style), Paragraph(f"{probability}%", normal_style)],
+        [Paragraph("<b>Recommended Specialist</b>", normal_style), Paragraph(specialist, normal_style)],
+        [Paragraph("<b>Diet Plan</b>", normal_style), Paragraph(diet_plan, normal_style)],
+        [Paragraph("<b>Exercise Plan</b>", normal_style), Paragraph(exercise_plan, normal_style)],
     ]
 
-    table = Table(data, colWidths=[2.5 * inch, 3.5 * inch])
+    table = Table(data, colWidths=[2.2 * inch, 4.2 * inch])
     table.setStyle(TableStyle([
         ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
         ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 8),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 6),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 6),
     ]))
 
     elements.append(table)
     elements.append(Spacer(1, 20))
-    elements.append(
-        Paragraph(
-            "This AI-generated report is for awareness purposes only and does not replace professional medical advice.",
-            styles["Normal"]
-        )
-    )
+    
 
     doc.build(elements)
 
