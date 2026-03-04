@@ -239,15 +239,28 @@ def predict_view(request):
                 risk_level = "Low"
                 risk_color = "green"
                 interpretation = "No significant depressive indicators detected."
+
+                specialist = "General Psychologist / Wellness Coach"
+                diet_plan = "Fruits, leafy vegetables, nuts, whole grains, adequate hydration."
+                exercise_plan = "30 min brisk walking + light yoga + breathing exercises."
+
             elif prob < 0.70:
                 risk_level = "Moderate"
                 risk_color = "orange"
                 interpretation = "Moderate depressive indicators detected. Monitoring is recommended."
+
+                specialist = "Clinical Psychologist / Psychotherapist"
+                diet_plan = "Omega-3 foods, protein-rich diet, probiotics, avoid junk food."
+                exercise_plan = "40 min walking/jogging + meditation + light strength training."
+
             else:
                 risk_level = "High"
                 risk_color = "red"
                 interpretation = "High depressive risk detected. Professional consultation is strongly advised."
 
+                specialist = "Psychiatrist + Clinical Psychologist"
+                diet_plan = "Balanced meals, iron & B12 rich foods, omega-3 (doctor advised), avoid alcohol."
+                exercise_plan = "Gentle walking + deep breathing + structured daily routine."
             end_time = time.time()
             res=Result()
             res.patient_id=request.user
@@ -274,7 +287,11 @@ def predict_view(request):
                 "risk_color": risk_color,
                 "probability": round(prob * 100, 2),
                 "interpretation": interpretation,
-                "duration": round(end_time - start_time, 3)
+                "duration": round(end_time - start_time, 3),
+                "diet_plan":diet_plan,
+                "exercise_plan":exercise_plan,
+                "specialist":specialist
+
             }
 
             return render(request, "result.html", context)
@@ -288,3 +305,80 @@ def predict_view(request):
             })
 
     return render(request, "analysis.html",{  "allow": True})
+
+from django.http import HttpResponse
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.lib import colors
+from reportlab.platypus import TableStyle
+import io
+
+def download_pdf(request):
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer)
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # Get latest result
+    result = Result.objects.filter(patient_id=request.user).last()
+
+    if not result:
+        return HttpResponse("No result found")
+
+    probability = result.result  # already percentage
+
+    # -----------------------------
+    # Risk Classification Again
+    # -----------------------------
+    if probability < 40:
+        risk_level = "Low"
+        specialist = "General Psychologist / Wellness Coach"
+        diet_plan = "Fruits, leafy greens, nuts, whole grains, proper hydration."
+        exercise_plan = "30 min brisk walking + light yoga + breathing exercises."
+
+    elif probability < 70:
+        risk_level = "Moderate"
+        specialist = "Clinical Psychologist / Psychotherapist"
+        diet_plan = "Omega-3 foods, protein-rich diet, probiotics, avoid junk food."
+        exercise_plan = "40 min walking/jogging + meditation + light strength training."
+
+    else:
+        risk_level = "High"
+        specialist = "Psychiatrist + Clinical Psychologist"
+        diet_plan = "Balanced meals, iron & B12 rich foods, omega-3 (doctor advised), avoid alcohol."
+        exercise_plan = "Gentle walking + deep breathing + structured daily routine."
+
+    # -----------------------------
+    # PDF Content
+    # -----------------------------
+    elements.append(Paragraph("Serenite - Mental Health Assessment Report", styles["Heading1"]))
+    elements.append(Spacer(1, 20))
+
+    data = [
+        ["Risk Level", risk_level],
+        ["Depression Probability", f"{probability}%"],
+        ["Recommended Specialist", specialist],
+        ["Diet Plan", diet_plan],
+        ["Exercise Plan", exercise_plan],
+    ]
+
+    table = Table(data, colWidths=[2.5 * inch, 3.5 * inch])
+    table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+    ]))
+
+    elements.append(table)
+    elements.append(Spacer(1, 20))
+    elements.append(
+        Paragraph(
+            "This AI-generated report is for awareness purposes only and does not replace professional medical advice.",
+            styles["Normal"]
+        )
+    )
+
+    doc.build(elements)
+
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type='application/pdf')

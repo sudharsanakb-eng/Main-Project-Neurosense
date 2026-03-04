@@ -19,5 +19,6 @@ urlpatterns = [
     path('con/',views.con,name='con'),
     path("logout/",views.logout_view,name='logout'),
     path("analysis/",views.predict_view,name='analysis'),
+    path("download-report/", views.download_pdf, name="download_report"),
 
 ]
