@@ -1,0 +1,106 @@
+{% load static %}
+{% include "layout/partials/guest/header.html" %}
+
+<style>
+/* ================= JOIN PAGE STYLING ================= */
+
+.join-title {
+    color: #222;
+    font-weight: 700;
+}
+
+.join-subtitle {
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.btn-role {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.btn-customer {
+    background: #a5c422;
+    color: #fff !important;
+}
+
+.btn-customer:hover {
+    background: #8fad1c;
+    color: #fff !important;
+}
+
+.btn-counsellor {
+    background: #222;
+    color: #fff !important;
+}
+
+.btn-counsellor:hover {
+    background: #000;
+    color: #fff !important;
+}
+
+.btn-login {
+    background: #a5c422;
+    color: #fff !important;
+    padding: 10px 25px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-login:hover {
+    background: #8fad1c;
+    color: #fff !important;
+}
+</style>
+
+<section id="appointment" data-stellar-background-ratio="3">
+    <div class="container">
+        <div class="row">
+
+            <!-- LEFT IMAGE -->
+            <div class="col-md-6 col-sm-6">
+                <img src="{% static 'guest/images/appointment-image.jpg' %}" 
+                     class="img-responsive" alt="">
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="col-md-6 col-sm-6">
+
+                <div class="section-title">
+                    <h2 class="join-title">JOIN NEUROSENSE</h2>
+                    <p class="join-subtitle">Select your role to continue</p>
+                </div>
+
+                <!-- Buttons -->
+                <a href="{% url 'dashboard:cust' %}" class="btn-role btn-customer">
+                    Register as Customer
+                </a>
+
+                <a href="{% url 'dashboard:con' %}" class="btn-role btn-counsellor">
+                    Register as Counsellor
+                </a>
+
+                <!-- Login Redirect -->
+                <div style="margin-top: 25px;">
+                    <p style="color:#555;">Already have an account?</p>
+                    <a href="{% url 'dashboard:login' %}" class="btn-login">
+                        Login here
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% include "layout/partials/guest/footer.html" %}

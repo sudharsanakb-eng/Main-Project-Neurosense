@@ -1,146 +1,192 @@
-{% include "layout/partials/counsellor/header.html" %}
+{% include "layout/partials/guest/header.html" %}
 
-<style>.gap-sm {
+<style>
+.gap-sm {
   display: flex;
-  gap: 8px;
-}</style>
+  gap: 10px;
+}
+</style>
+
 <div class="container">
   <div class="page-inner">
     
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header">
-            <div class="card-title">Form Elements</div>
-          </div>
+          
+       <div class="card-title" style="font-size: 28px; font-weight: 800;">
+  COUNSELLOR DETAILS
+</div>
+
           <div class="card-body">
-            <div class="row">
-              <form action="{% url 'dashboard:con' %}" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Name</label>
-                      <input type="text" class="form-control" id="email2" name="name" placeholder="Enter name"  required pattern="^[A-Z][a-zA-Z\s]*$" title="Name must start with a capital letter and contain only letters."/>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Specialization</label>
-                      <input type="text" class="form-control" id="email2" name="special"
-                        placeholder="Enter specialization" />
+            <form action="{% url 'dashboard:con' %}" 
+                  method="POST" 
+                  enctype="multipart/form-data">
+              {% csrf_token %}
 
-                    </div>
-                  </div>
+              <div class="row">
 
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Experience</label>
-                      <input type="text" class="form-control" id="email2" name="exp" placeholder="Enter Experience" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Doctor Number</label>
-                      <input type="text" class="form-control" id="email2" name="number"
-                        placeholder="Enter Doctor number " />
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> User name</label>
-                      <input type="text" class="form-control" id="email2" name="username"
-                        placeholder="Enter username" required minlength="8" title="Username must be at least 8 characters long." />
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Password</label>
-                      <input type="password" class="form-control" id="email2" name="password"
-                        placeholder="Enter password" required minlength="8" title="Password must be at least 8 characters long.">
-                                       
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> E-Mail</label>
-                      <input type="text" class="form-control" id="email2" name="email" placeholder="Enter email" />
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Contact</label>
-                      <input type="text" class="form-control" id="email2" name="contact"
-                        placeholder="Enter phone number" required />
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> About</label>
-                      <input type="text" class="form-control" id="email2" name="desc" placeholder="Enter description" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2">Image</label>
-                      <input type="file" class="form-control" id="email2" name="img" />
-
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Daily count</label>
-                      <input type="text" class="form-control" id="email2" name="count" placeholder="Enter count" />
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="email2"> Fee</label>
-                      <input type="text" class="form-control" id="email2" name="fee" placeholder="Amount" />
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="select">Gender</label>
-                      <select class="form-control" name="gender">
-                        <option>Select</option>
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
+                <!-- Name -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control"
+                      name="name"
+                      placeholder="Enter name"
+                      required
+                      pattern="^[A-Z][a-zA-Z\s]*$"
+                      title="Name must start with a capital letter and contain only letters.">
                   </div>
                 </div>
-                
 
-
-                <div class="d-flex justify-content-end gap-sm">
-                  <!-- <div class="col-md-2"> -->
-                    <button class="btn btn-success ">Submit</button>
-
-                  <!-- </div> -->
-                  <!-- <div class="col-md-2"> -->
-
-                    <button class="btn btn-light">Cancel</button>
-                  <!-- </div> -->
+                <!-- Specialization -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Specialization</label>
+                    <input type="text" class="form-control"
+                      name="special"
+                      placeholder="Enter specialization">
+                  </div>
                 </div>
-              </form>
-            </div>
+
+                <!-- Experience -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Experience (Years)</label>
+                    <input type="number" class="form-control"
+                      name="exp"
+                      placeholder="Enter years of experience">
+                  </div>
+                </div>
+
+                <!-- Doctor Number -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>License / Doctor Number</label>
+                    <input type="text" class="form-control"
+                      name="number"
+                      placeholder="Enter license number">
+                  </div>
+                </div>
+
+                <!-- Username -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control"
+                      name="username"
+                      placeholder="Enter username"
+                      required minlength="8">
+                  </div>
+                </div>
+
+                <!-- Password -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control"
+                      name="password"
+                      placeholder="Enter password"
+                      required minlength="8">
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" class="form-control"
+                      name="email"
+                      placeholder="Enter email">
+                  </div>
+                </div>
+
+                <!-- Contact -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Contact</label>
+                    <input type="tel" class="form-control"
+                      name="contact"
+                      placeholder="Enter phone number"
+                      pattern="[0-9]{10}"
+                      title="Enter valid 10 digit number">
+                  </div>
+                </div>
+
+                <!-- About -->
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>About</label>
+                    <textarea class="form-control"
+                      name="desc"
+                      rows="3"
+                      placeholder="Enter description"></textarea>
+                  </div>
+                </div>
+
+                <!-- Image -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Profile Image</label>
+                    <input type="file" class="form-control"
+                      name="img">
+                  </div>
+                </div>
+
+                <!-- Daily Count -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Daily Count</label>
+                    <input type="number" class="form-control"
+                      name="count"
+                      placeholder="Enter count">
+                  </div>
+                </div>
+
+                <!-- Fee -->
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Fee</label>
+                    <input type="number" class="form-control"
+                      name="fee"
+                      placeholder="Enter amount">
+                  </div>
+                </div>
+
+                <!-- Gender -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Gender</label>
+                    <select class="form-control" name="gender" required>
+                      <option value="" disabled selected>Select Gender</option>
+                      <option>Male</option>
+                      <option>Female</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Buttons -->
+              <div class="d-flex justify-content-end gap-sm mt-3">
+                <button type="submit" class="btn btn-success">
+                  Submit
+                </button>
+
+                <button type="button" class="btn btn-light"
+                  onclick="window.history.back();">
+                  Cancel
+                </button>
+              </div>
+
+            </form>
           </div>
+
         </div>
       </div>
     </div>
   </div>
-  {% include "layout/partials/counsellor/footer.html" %}
+</div>
+
+{% include "layout/partials/counsellor/footer.html" %}

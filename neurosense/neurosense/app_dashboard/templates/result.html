@@ -1,12 +1,12 @@
-{% block title %}Your Assessment Result | Serenite{% endblock %}
+{% include "layout/partials/user/header.html" %}
 {% block content %}
 
 <style>
 .glass {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.85),
-    rgba(240, 248, 255, 0.65)
+    rgba(255, 255, 255, 0.9),
+    rgba(240, 248, 255, 0.7)
   );
   backdrop-filter: blur(14px);
   border-radius: 24px;
@@ -17,163 +17,138 @@
 .glass:hover {
   transform: translateY(-3px);
 }
-  .lock-banner {
-    background: #f3e3b0;
-    border-radius: 14px;
-    padding: 16px;
-    font-weight: 600;
-  }
 
-  .day-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #dee2e6;
-    margin: auto;
-  }
-
-  .day-dot.active {
-    background: #0d6efd;
-  }
+.result-container {
+  max-width: 900px;
+  margin: 60px auto;
+}
 </style>
 
-<div class="row justify-content-center">
-  <div class="col-lg-8">
+<div class="container result-container">
 
-    <!-- Header -->
-    <div class="glass p-4 mb-4">
-      <h4 class="fw-bold mb-1">Your Mental Health Assessment Result</h4>
-      <p class="text-muted mb-0">AI-driven insight based on your latest responses</p>
+  <!-- Header Card -->
+  <div class="glass p-4 mb-4 text-center">
+    <h3 class="fw-bold mb-1">
+      Your Mental Health Assessment Result
+    </h3>
+    <p class="text-muted mb-0">
+      AI-driven insight based on your latest responses
+    </p>
+  </div>
+
+  <!-- Main Result Card -->
+  <div class="glass p-5 mb-4">
+
+    <!-- Title -->
+    <div class="text-center mb-4">
+      <h4 class="fw-bold text-primary">
+        Latest AI Assessment Result
+      </h4>
+      <p class="text-muted">
+        Personalized mental wellness insights
+      </p>
     </div>
 
-    <!-- Availability Section -->
- <!-- 🔥 Prediction Result -->
-<div class="glass p-5 mb-4">
+    <!-- Risk Badge -->
+    <div class="text-center mb-4">
+      <span class="badge px-4 py-2 fs-5
+        {% if risk_level == 'Low' %}
+          bg-success
+        {% elif risk_level == 'Moderate' %}
+          bg-warning text-dark
+        {% elif risk_level == 'High' %}
+          bg-danger
+        {% else %}
+          bg-secondary
+        {% endif %}
+      ">
+        {{ risk_level }} Risk
+      </span>
 
-  <div class="text-center mb-4">
-    <h3 class="fw-bold text-primary">Latest AI Assessment Result</h3>
-    <p class="text-muted">Personalized mental wellness insights</p>
-  </div>
-
-  <!-- Risk Badge -->
-  <div class="text-center mb-4">
-    <span class="badge px-4 py-2 fs-5
-{% if risk_level == 'Low' %}
-  bg-success
-{% elif risk_level == 'Moderate' %}
-  bg-warning text-dark
-{% elif risk_level == 'High' %}
-  bg-danger
-{% else %}
-  bg-secondary
-{% endif %}
-">
-      {{ risk_level }} Risk
-    </span>
-
-    <div class="display-5 fw-bold mt-3">
-      {{ probability|default:"0.00" }}%
-    </div>
-  </div>
-
-  <!-- Risk Meter -->
-  <div class="progress mb-4" style="height:18px; border-radius:20px;">
-    <div class="progress-bar
-  {% if risk_level == 'Low' %}
-    bg-success
-  {% elif risk_level == 'Moderate' %}
-    bg-warning
-  {% else %}
-    bg-danger
-  {% endif %}" style="width: {{ probability|default:0 }}%;">
-    </div>
-  </div>
-
-  <!-- Interpretation -->
-  <div class="alert alert-light border text-center mb-4">
-    {{ interpretation }}
-  </div>
-
-  <!-- 🌿 Recommendation Section -->
-  <div class="row g-4">
-
-    <!-- Specialist -->
-    <div class="col-md-4">
-      <div class="p-4 border rounded-4 h-100 bg-light shadow-sm">
-        <h6 class="fw-bold text-primary mb-3">
-          🩺 Recommended Specialist
-        </h6>
-        <p class="mb-0 text-muted">
-          {{ specialist }}
-        </p>
+      <div class="display-5 fw-bold mt-3">
+        {{ probability|default:"0.00" }}%
       </div>
     </div>
 
-    <!-- Diet Plan -->
-    <div class="col-md-4">
-      <div class="p-4 border rounded-4 h-100 bg-light shadow-sm">
-        <h6 class="fw-bold text-success mb-3">
-          🥗 Diet Plan Suggestion
-        </h6>
-        <p class="mb-0 text-muted">
-          {{ diet_plan }}
-        </p>
+    <!-- Progress Bar -->
+    <div class="progress mb-4" style="height:18px; border-radius:20px;">
+      <div class="progress-bar
+        {% if risk_level == 'Low' %}
+          bg-success
+        {% elif risk_level == 'Moderate' %}
+          bg-warning
+        {% else %}
+          bg-danger
+        {% endif %}
+      " style="width: {{ probability|default:0 }}%;">
       </div>
     </div>
 
-    <!-- Exercise Plan -->
-    <div class="col-md-4">
-      <div class="p-4 border rounded-4 h-100 bg-light shadow-sm">
-        <h6 class="fw-bold text-danger mb-3">
-          🏃 Exercise Plan
-        </h6>
-        <p class="mb-0 text-muted">
-          {{ exercise_plan }}
-        </p>
+    <!-- Interpretation -->
+    <div class="alert alert-light border text-center mb-5">
+      {{ interpretation }}
+    </div>
+
+    <!-- Recommendations -->
+    <div class="row g-4">
+
+      <!-- Specialist -->
+      <div class="col-md-4">
+        <div class="p-4 border rounded-4 h-100 bg-light shadow-sm text-center">
+          <h6 class="fw-bold text-primary mb-3">
+            🩺 Recommended Specialist
+          </h6>
+          <p class="mb-0 text-muted">
+            {{ specialist }}
+          </p>
+        </div>
       </div>
+
+      <!-- Diet -->
+      <div class="col-md-4">
+        <div class="p-4 border rounded-4 h-100 bg-light shadow-sm text-center">
+          <h6 class="fw-bold text-success mb-3">
+            🥗 Diet Plan Suggestion
+          </h6>
+          <p class="mb-0 text-muted">
+            {{ diet_plan }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Exercise -->
+      <div class="col-md-4">
+        <div class="p-4 border rounded-4 h-100 bg-light shadow-sm text-center">
+          <h6 class="fw-bold text-danger mb-3">
+            🏃 Exercise Plan
+          </h6>
+          <p class="mb-0 text-muted">
+            {{ exercise_plan }}
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Processing Time -->
+    <div class="text-center mt-4">
+      <small class="text-muted">
+        ⏱ Processing Time: {{ duration|default:"0.00" }} seconds
+      </small>
+    </div>
+
+    <!-- Download Button -->
+    <div class="text-center mt-4">
+      <a href="{% url 'dashboard:download_report' %}" 
+         class="btn btn-success px-5 py-2">
+         Download PDF Report
+      </a>
     </div>
 
   </div>
 
-  <div class="text-center mt-4">
-    <small class="text-muted">
-      ⏱ Processing Time: {{ duration|default:"0.00" }} seconds
-    </small>
-  </div>
-
 </div>
-
-  </div>
-  <div class="col-md-6">
-  <a href="{% url 'dashboard:download_report' %}" 
-     class="btn btn-success w-100">
-     Download PDF Report
-  </a>
-</div>
-</div>
-
-{% if not allow_new %}
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    let sec = parseInt(document.getElementById("seconds")?.dataset.sec || 0);
-    const out = document.getElementById("countdownTimer");
-
-    function tick() {
-      if (sec <= 0) {
-        out.innerText = "Available Now";
-        return;
-      }
-      const d = Math.floor(sec / 86400);
-      const h = Math.floor((sec % 86400) / 3600);
-      const m = Math.floor((sec % 3600) / 60);
-      const s = sec % 60;
-      out.innerText = `${d}d ${h}h ${m}m ${s}s`;
-      sec--;
-    }
-    tick();
-    setInterval(tick, 1000);
-  });
-</script>
-{% endif %}
 
 {% endblock %}
+
+{% include "layout/partials/guest/footer.html" %}

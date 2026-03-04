@@ -144,7 +144,7 @@ def con(request):
 def logout_view(request):
     logout(request)
     return HttpResponse(
-        "<script>alert('Logged out successfully');window.location='/dashboard/login/';</script>"
+        "<script>alert('Logged out successfully');window.location='/dashboard/userdash/';</script>"
     )
 
 import os
@@ -382,3 +382,10 @@ def download_pdf(request):
 
     buffer.seek(0)
     return HttpResponse(buffer, content_type='application/pdf')
+
+
+
+    
+
+def join(request):
+    return render(request, "join.html")
