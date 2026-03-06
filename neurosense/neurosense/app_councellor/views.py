@@ -19,7 +19,30 @@ def vcusto(request):
 def report_view(request,id):
         
     c=Appointment.objects.get(id=id)
-    report=Result.objects.filter(patient_id=c.customer)
+    report = Result.objects.filter(patient_id=c.customer).order_by('-id')[:10]
+
+    report_list = []
+
+    for r in report:
+        probability = float(r.result)
+
+        if probability < 40:
+            risk_level = "Low"
+            
+        elif probability < 70:
+            risk_level = "Moderate"
+          
+        else:
+            risk_level = "High"
+           
+        report_list.append({
+            "id": r.id,
+            "result": r.result,
+            "risk_level": risk_level,
+           
+        })
+
+
     if request.method=="POST":
         # 1. Create the Doctor Appointment
         meeting_link = None
@@ -48,6 +71,18 @@ def report_view(request,id):
             from_email=None,
             recipient_list=[c.customer.email],
         )
+        return HttpResponse("<script>alert('Meeting Scheduled Successfully');window.location='/councellor/vhome/';</script>" )
 
-    return render(request ,'result.html',{'app':c,"report":report})
+    return render(request ,'customer_result.html',{'app':c,"report": report_list,})
 
+def report_detail_view(request,id):
+    data=Result.objects.get(id=id)
+    score = float(data.result)
+
+    if score < 40:
+        risk = "Low"
+    elif score < 70:
+        risk = "Moderate"
+    else:
+        risk = "High"
+    return render(request,"result_detail.html",{"data":data,"risk":risk})

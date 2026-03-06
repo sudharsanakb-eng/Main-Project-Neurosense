@@ -1,100 +1,188 @@
-{% include 'layout/partials/admin/header.html' %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Counsellor Status</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
-  .button-class{
-    font-size: 30px;
-  }
+
+body{
+background:#f4f7fb;
+font-family: 'Segoe UI', sans-serif;
+}
+
+.sidebar{
+height:100vh;
+background:#1f2a40;
+color:white;
+padding:25px;
+position:fixed;
+width:230px;
+}
+
+.sidebar h3{
+font-weight:600;
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+padding:12px 10px;
+border-radius:8px;
+margin-bottom:10px;
+}
+
+.sidebar a:hover{
+background:#2d3c5a;
+}
+
+.main{
+margin-left:250px;
+padding:30px;
+}
+
+.card{
+border:none;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+
+.table{
+background:white;
+border-radius:10px;
+overflow:hidden;
+}
+
+.counsellor-img{
+width:50px;
+height:50px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.badge-approved{
+background:#28a745;
+}
+
+.badge-pending{
+background:#ffc107;
+color:black;
+}
+
 </style>
-<div class="container">
-  <div class="page-inner">
-    <div class="page-header">
-      <h3 class="fw-bold mb-3">DataTables.Net</h3>
-      <ul class="breadcrumbs mb-3">
-        <li class="nav-home">
-          <a href="#">
-            <i class="icon-home"></i>
-          </a>
-        </li>
-        <li class="separator">
-          <i class="icon-arrow-right"></i>
-        </li>
-        <li class="nav-item">
-          <a href="#">Tables</a>
-        </li>
-        <li class="separator">
-          <i class="icon-arrow-right"></i>
-        </li>
-        <li class="nav-item">
-          <a href="#">Datatables</a>
-        </li>
-      </ul>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="card-title">Basic</h4>
-          </div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table id="basic-datatables" class="display table table-striped table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Image</th>
 
-                    <th scope="col">Specialization</th>
-                    <th scope="col">Experience</th>
-                    <th scope="col">Doctor Number</th>
-                    <!-- <th scope="col">User Name</th>
-                            <th scope="col">Password</th> -->
-                    <th scope="col">Contact Details</th>
-                    <th scope="col">About</th>
-                    <th scope="col">Daily Count</th>
-                    <th scope="col">Status</th>
-                    <th></th>
-                  </tr>
-                </thead>
+</head>
 
-                <tbody>
-                  {% for i in vdi %}
-                  <tr>
+<body>
 
-                    <td>{{forloop.counter}}</td>
-                    <td>{{i.user.name}}</td>
-                    <td><img src="/media/{{i.photo}}" style="width: 50px;height: 50px"></td>
+<!-- Sidebar -->
 
-                    <td>{{i.special}}</td>
-                    <td>{{i.exp}}</td>
-                    <td>{{i.number}}</td>
-                    <!-- <td>{{i.user.username}}</td>
-                            <td>{{i.user.password}}</td> -->
+<div class="sidebar">
 
-                    <td>{{i.contact}}<br>{{i.user.email}}</td>
-                    <td>{{i.desc}}</td>
-                    <td>{{i.count}}</td>
-                    <td>{{i.status}}</td>
-                    
+<h3>NeuroSense</h3>
 
-                   <td>
-  
+<a href="{% url 'dashboard:admin' %}">Dashboard</a>
+<a href="{% url 'core:cust' %}">Customers</a>
+<a href="{% url 'core:vcon' %}">Counsellors</a>
+<a href="{% url 'core:vacc' %}">Counsellors Accept</a>
+<a href="{% url 'dashboard:logout' %}">Logout</a>
 
-
-
-                  {% endfor %}
-
-
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-    </div>
-  </div>
 </div>
 
-{% include 'layout/partials/admin/footer.html' %}
+
+<!-- Main Content -->
+
+<div class="main">
+
+<h2 class="mb-4">Counsellor Status</h2>
+
+<div class="card p-4">
+
+<h5 class="mb-3">Approved Counsellors</h5>
+
+<div class="table-responsive">
+
+<table class="table table-hover">
+
+<thead>
+
+<tr>
+<th>#</th>
+<th>Name</th>
+<th>Photo</th>
+<th>Specialization</th>
+<th>Experience</th>
+<th>Doctor Number</th>
+<th>Contact</th>
+<th>About</th>
+<th>Daily Limit</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for i in vdi %}
+
+<tr>
+
+<td>{{forloop.counter}}</td>
+
+<td>{{i.user.name}}</td>
+
+<td>
+<img src="/media/{{i.photo}}" class="counsellor-img">
+</td>
+
+<td>{{i.special}}</td>
+
+<td>{{i.exp}} Years</td>
+
+<td>{{i.number}}</td>
+
+<td>
+{{i.contact}} <br>
+{{i.user.email}}
+</td>
+
+<td>{{i.desc}}</td>
+
+<td>{{i.count}}</td>
+
+<td>
+
+{% if i.status == "Accepted" %}
+<span class="badge badge-approved">Accepted</span>
+
+{% else %}
+<span class="badge badge-pending">{{i.status}}</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

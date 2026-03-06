@@ -9,6 +9,8 @@ urlpatterns =  [
  path('vhome/', views.vhome, name='vhome'),
  path('vcusto/',views.vcusto,name='vcusto'),
  path('view_report/<int:id>/',views.report_view,name='view_report'),
+ path('result_detail/<int:id>/',views.report_detail_view,name='result_detail'),
+
  
  
 ]

@@ -136,14 +136,34 @@
         ⏱ Processing Time: {{ duration|default:"0.00" }} seconds
       </small>
     </div>
+    <div class="row mb-4">
+      <div class="col-md-6">
+  <div class="text-center mt-4">
 
-    <!-- Download Button -->
-    <div class="text-center mt-4">
+{% if specialist %}
+<a href="{% url 'user:vcon_special' specialist %}" 
+   class="btn btn-success px-5 py-2">
+   Take appointment
+</a>
+{% else %}
+
+{% endif %}
+
+</div>
+      </div>
+      <div class="col-md-6">
+ <div class="text-center mt-4">
       <a href="{% url 'dashboard:download_report' %}" 
          class="btn btn-success px-5 py-2">
          Download PDF Report
       </a>
     </div>
+      </div>
+    </div>
+  
+
+    <!-- Download Button -->
+   
 
   </div>
 

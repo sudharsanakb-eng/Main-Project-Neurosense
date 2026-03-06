@@ -1,17 +1,30 @@
 from datetime import date, datetime, timedelta
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-
+from django.db.models import Q
 from app_core.models import councellor
 from app_dashboard.models import customer
 from app_patient.models import Appointment,Payment
 from django.shortcuts import render, get_object_or_404
 from neurosense.users.models import User
 from app_dashboard.models import customer
-
+import re
 # Create your views here.
-def vcon(request):
-    c=councellor.objects.filter(status='Accept')
+def vcon(request, specialisation=None):
+    if specialisation:
+        specs = re.split(r'and|\+|\/', specialisation)
+
+        query = Q()
+        for s in specs:
+            words = s.strip().split()
+
+            for w in words:
+                query |= Q(special__icontains=w)
+
+        c = councellor.objects.filter(status='Accept').filter(query)
+
+    else:
+        c = councellor.objects.filter(status='Accept')
     return render(request ,'conview.html',{'vdi':c})
 def vdetail(request,id):
     c=councellor.objects.get(id=id)
@@ -73,7 +86,7 @@ def app(request, id):
         total_minutes = booked_count * duration_minutes
         appointment_time = start_time + timedelta(minutes=total_minutes)
         appointment_time = appointment_time.time()
-        today = date.today()
+       
     # 4️⃣ Render Page
     
            
@@ -103,7 +116,7 @@ def app(request, id):
             "councellor": counc,
             "customer": profile,
             "id": id, 
-            "today":today
+           
             
         }
     )

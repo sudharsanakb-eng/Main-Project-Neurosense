@@ -1,0 +1,181 @@
+{% load static %}
+{% include "layout/partials/counsellor/header.html" %}
+
+<style>
+    .report-section {
+        padding: 60px 0;
+        background: #f4f7fb;
+    }
+
+    .report-card {
+        background: #fff;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .report-title {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 25px;
+    }
+
+    .label {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .value {
+        color: #555;
+    }
+
+    .badge-low {
+        background: #28a745;
+        padding: 6px 14px;
+        border-radius: 20px;
+        color: white;
+    }
+
+    .badge-moderate {
+        background: #ffc107;
+        padding: 6px 14px;
+        border-radius: 20px;
+    }
+
+    .badge-high {
+        background: #dc3545;
+        padding: 6px 14px;
+        border-radius: 20px;
+        color: white;
+    }
+</style>
+
+<section class="report-section">
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+
+                <!-- REPORT SUMMARY -->
+
+                <div class="report-card">
+
+                    <h3 class="report-title">Depression Analysis Result</h3>
+
+                    <p><span class="label">Score :</span> {{ data.result }}</p>
+                    
+
+                    {% if risk == "Low" %} <p><span class="label">Risk Level :</span>
+                        <span class="badge-low">Low</span>
+                        </p>
+
+                        {% elif risk == "Moderate" %} <p><span class="label">Risk Level :</span>
+                            <span class="badge-moderate">Moderate</span>
+                            </p>
+
+                            {% else %}
+                            <p><span class="label">Risk Level :</span>
+                                <span class="badge-high">High</span>
+                            </p>
+                            {% endif %}
+                </div>
+
+
+                <!-- QUESTIONNAIRE DETAILS -->
+
+                <div class="report-card">
+
+                    <h3 class="report-title">User Response Details</h3>
+
+                    <table class="table table-bordered">
+
+                        <tr>
+                            <th>Gender</th>
+                            <td>{{ data.What_is_your_gender }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Age</th>
+                            <td>{{ data.What_is_your_age }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>City</th>
+                            <td>{{ data.Which_city_do_you_currently_live_in }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Type</th>
+                            <td>{{ data.working_professional_or_student }}</td>
+                        </tr>
+
+
+                        {% if data.working_professional_or_student == "Working Professional" %}
+
+                        <tr>
+                            <th>Profession</th>
+                            <td>{{ data.What_is_your_profession }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Work Pressure</th>
+                            <td>{{ data.How_would_you_rate_your_work_pressure_level }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Job Satisfaction</th>
+                            <td>{{ data.How_satisfied_are_you_with_your_job_or_studies }}</td>
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <th>Study Hours Per Day</th>
+                            <td>{{ data.How_many_hours_per_day_do_you_spend_working_or_studying }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Education</th>
+                            <td>{{ data.What_is_your_highest_educational_qualification }}</td>
+                        </tr>
+
+                        {% endif %}
+
+
+                        <tr>
+                            <th>Sleep Duration</th>
+                            <td>{{ data.How_many_hours_do_you_sleep_on_average_per_day }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Dietary Habits</th>
+                            <td>{{ data.How_would_you_describe_your_dietary_habits }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Financial Stress</th>
+                            <td>{{ data.How_would_you_rate_your_current_financial_stress_level }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Suicidal Thoughts</th>
+                            <td>{{ data.Have_you_ever_experienced_suicidal_thoughts }}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Family Mental Illness History</th>
+                            <td>{{ data.Is_there_any_history_of_mental_illness_in_your_family }}</td>
+                        </tr>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% include "layout/partials/counsellor/footer.html" %}

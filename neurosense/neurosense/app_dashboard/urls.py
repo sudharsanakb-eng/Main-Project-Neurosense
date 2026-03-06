@@ -20,6 +20,8 @@ urlpatterns = [
     path("logout/",views.logout_view,name='logout'),
     path("analysis/",views.predict_view,name='analysis'),
     path("download-report/", views.download_pdf, name="download_report"),
-     path('join/', views.join, name='join'),
+    path('join/', views.join, name='join'),
+    # path('admin_booking_report/', views.seller_booking_pie_chart, name= 'admin_booking_report'), 
+
 
 ]

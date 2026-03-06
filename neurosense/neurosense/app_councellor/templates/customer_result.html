@@ -1,0 +1,159 @@
+{% load static %}
+{% include "layout/partials/counsellor/header.html" %}
+
+<style>
+    .result-section {
+        padding: 60px 0;
+        background: #f4f7fb;
+    }
+
+    .result-card {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .section-title {
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #2c3e50;
+    }
+
+    .label-title {
+        font-weight: 600;
+        color: #444;
+    }
+
+    .value-text {
+        color: #666;
+        margin-bottom: 15px;
+    }
+
+    .schedule-btn {
+        background-color: #a5c422;
+        color: #fff;
+        padding: 12px 30px;
+        border-radius: 30px;
+        border: none;
+        font-weight: 600;
+        transition: 0.3s;
+    }
+
+    .schedule-btn:hover {
+        background-color: #8cab1b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+
+<section class="result-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <!-- CUSTOMER DETAILS -->
+                <div class="result-card" style="
+    height: 315px;
+">
+                    <h3 class="section-title">Customer Information</h3>
+
+                    <p><span class="label-title">Name:</span> {{ app.customer.name }}</p>
+                    <p><span class="label-title">Appointment Date:</span> {{ app.appointmentdate }}</p>
+                    <p><span class="label-title">Appointment Time:</span> {{ app.appointmenttime }}</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- SCHEDULE MEETING -->
+                <div class="result-card text-center">
+                    <h3 class="section-title">Schedule Counselling Session</h3>
+
+                    <form action="{% url 'councellor:view_report' app.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label>Select Meeting Date</label>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="date" name="meeting_date"
+                                        value="{{ app.appointmentdate|date:'Y-m-d' }}" class="form-control" required>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <label>Select Meeting Time</label>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <input type="time" name="meeting_time" value="{{ app.appointmenttime|time:'H:i' }}"
+                                        class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="schedule-btn">
+                            Schedule Meeting
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Score</th>
+                                <th>Risk Level</th>
+                                <th>View Details</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for i in report %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ i.result }}</td>
+                                <td>
+                                    {% if i.risk_level == "Low" %}
+                                    <span class="badge bg-success">Low</span>
+                                    {% elif i.risk_level == "Moderate" %}
+                                    <span class="badge bg-warning">Moderate</span>
+                                    {% else %}
+                                    <span class="badge bg-danger">High</span>
+                                    {% endif %}
+                                </td>
+                                <td><a href="{% url 'councellor:result_detail' i.id %}" class="btn btn-success">View
+                                        Details</button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "layout/partials/counsellor/footer.html" %}

@@ -1,10 +1,12 @@
+from itertools import count
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth import authenticate,login
 
 from app_dashboard.models import customer
 from app_core.models import Question, councellor
-from app_patient.models import Result
+from app_patient.models import Appointment, Result
 from neurosense.users.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
@@ -389,3 +391,20 @@ def download_pdf(request):
 
 def join(request):
     return render(request, "join.html")
+
+# def seller_booking_pie_chart(request): 
+#     seller_data = (Appointment.objects.values( 'material__seller__seller_name') 
+#         .annotate(booking_count=count('booking_master' 	, distinct=True)) 
+#    	.order_by('-booking_count')) 	 
+#     labels = [item['material__seller__seller_name' 	] for item in seller_data if item['material__seller__seller_name']] 	 
+#     data = [item['booking_count'] for item in seller_data  	if item['material__seller__seller_name']] 
+ 
+#     context = { 
+ 
+#         'labels': labels, 
+ 
+#         'data': data, 
+ 
+#     } 
+ 
+#     return render(request, 'Admin/booking_report.html', context) 
