@@ -1,0 +1,63 @@
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header text-center">
+                    <h4>Appointment Status Report</h4>
+                </div>
+
+                <div class="card-body text-center">
+
+                    <div style="width:350px; height:350px; margin:auto;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const labels = {{ labels|safe }};
+const data = {{ data|safe }};
+
+const ctx = document.getElementById('statusChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Appointments",
+            data: data,
+            backgroundColor: [
+                '#36A2EB',
+                '#FF6384'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+</script>

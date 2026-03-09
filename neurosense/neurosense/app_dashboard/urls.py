@@ -21,7 +21,7 @@ urlpatterns = [
     path("analysis/",views.predict_view,name='analysis'),
     path("download-report/", views.download_pdf, name="download_report"),
     path('join/', views.join, name='join'),
-    # path('admin_booking_report/', views.seller_booking_pie_chart, name= 'admin_booking_report'), 
-
+    path('appointment-status-report/', views.appointment_status_report, name='appointment_status_report'),
+    path('payment-report/', views.rep2, name='rep2'),
 
 ]

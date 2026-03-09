@@ -6,17 +6,36 @@ from django.contrib.auth import authenticate,login
 
 from app_dashboard.models import customer
 from app_core.models import Question, councellor
-from app_patient.models import Appointment, Result
+from app_patient.models import Appointment, Payment, Result
 from neurosense.users.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.auth import logout
+from django.db.models import Count
 
 
 # Create your views here.
 def appdash(request):
-    return render(request,"admin.html")
+
+    report = Appointment.objects.values('status').annotate(total=Count('id'))
+
+    labels = []
+    data = []
+
+    for r in report:
+        labels.append(r['status'])
+        data.append(int(r['total']))
+
+    payments = Payment.objects.select_related('appointmentid')
+
+    context = {
+        "labels": json.dumps(labels),
+        "data": json.dumps(data),
+        "payments": payments
+    }
+
+    return render(request, "admin.html", context)
 
 def guest(request):
     return render(request,"guest.html")
@@ -392,19 +411,27 @@ def download_pdf(request):
 def join(request):
     return render(request, "join.html")
 
-# def seller_booking_pie_chart(request): 
-#     seller_data = (Appointment.objects.values( 'material__seller__seller_name') 
-#         .annotate(booking_count=count('booking_master' 	, distinct=True)) 
-#    	.order_by('-booking_count')) 	 
-#     labels = [item['material__seller__seller_name' 	] for item in seller_data if item['material__seller__seller_name']] 	 
-#     data = [item['booking_count'] for item in seller_data  	if item['material__seller__seller_name']] 
- 
-#     context = { 
- 
-#         'labels': labels, 
- 
-#         'data': data, 
- 
-#     } 
- 
-#     return render(request, 'Admin/booking_report.html', context) 
+
+
+
+def appointment_status_report(request):
+
+    report = Appointment.objects.values('status').annotate(total=Count('id'))
+
+    labels = []
+    data = []
+
+    for r in report:
+        labels.append(r['status'])
+        data.append(int(r['total']))
+
+    context = {
+        "labels": json.dumps(labels),
+        "data": json.dumps(data)
+    }
+
+    return render(request, "rep1.html", context)
+
+def rep2(request):
+    payments = Payment.objects.select_related('appointmentid')
+    return render(request, 'rep2.html', {'payments': payments})

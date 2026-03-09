@@ -137,9 +137,68 @@ background:#dc3545;
 
 <div class="card p-4">
 
-<h5>Risk Distribution</h5>
+<h5>Appointment Status Report</h5>
 
-<canvas id="riskChart"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div>
+
+                <div class="card-body text-center">
+
+                    <div style="width:350px; height:350px; margin:auto;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const labels = {{ labels|safe }};
+const data = {{ data|safe }};
+
+const ctx = document.getElementById('statusChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: "Appointments",
+            data: data,
+            backgroundColor: [
+                '#36A2EB',
+                '#FF6384'
+            ]
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+
+</script>
 
 </div>
 
@@ -149,10 +208,39 @@ background:#dc3545;
 
 <div class="card p-4">
 
-<h5>Monthly Tests</h5>
+<div class="container mt-5">
 
-<canvas id="monthlyChart"></canvas>
+<h2 class="mb-4">Payment Report</h2>
 
+
+
+<table class="table table-bordered">
+
+<thead>
+<tr>
+<th>Appointment Id</th>
+<th>Payment Date</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for p in payments %}
+
+<tr>
+<td>{{ p.appointmentid.id }}</td>
+<td>{{ p.paymentdate }}</td>
+<td>{{ p.amount }}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
 </div>
 
 </div>
